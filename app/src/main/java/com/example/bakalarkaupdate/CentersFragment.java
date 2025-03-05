@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.ListenerRegistration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +26,7 @@ public class CentersFragment extends Fragment {
     private CentersAdapter adapter;
     private List<Center> centersList;
     private FirebaseFirestore db;
+    private ListenerRegistration firestoreListener;
 
     public CentersFragment() {
         // Required empty public constructor
@@ -56,6 +59,7 @@ public class CentersFragment extends Fragment {
         adapter.setOnItemClickListener(center -> {
             Intent intent = new Intent(getActivity(), DetailCenterActivity.class);
             intent.putExtra("centerId", center.getId());
+            Log.d("CentersFragment", "Center ID: " + center.getId());
             startActivity(intent);
         });
         loadData();
@@ -63,7 +67,7 @@ public class CentersFragment extends Fragment {
     }
 
     private void loadData() {
-        db.collection("centers")
+        firestoreListener = db.collection("centers")
                 .addSnapshotListener((value, error) -> {
                     if (error != null) {
                         Toast.makeText(getContext(), "Chyba s datami", Toast.LENGTH_LONG).show();
@@ -79,5 +83,13 @@ public class CentersFragment extends Fragment {
                     }
                     adapter.notifyDataSetChanged();
                 });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (firestoreListener != null) {
+            firestoreListener.remove();
+        }
     }
 }

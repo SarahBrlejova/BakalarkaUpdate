@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tvRouteBoulderName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Názov cesty/bouldru"
+        android:textSize="18sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/tvRouteBoulderDifficulty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Obtiažnosť"
+        android:textSize="14sp"/>
+
+    <TextView
+        android:id="@+id/TVRouteBoulderID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ID"
+        android:textSize="14sp"/>
+
+</LinearLayout>
