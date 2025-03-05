@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "1027507984607",
+    "firebase_url": "https://bakalarka-12345-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "bakalarka-12345",
+    "storage_bucket": "bakalarka-12345.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1027507984607:android:9c10faca5ad7ec6c35f16a",
+        "android_client_info": {
+          "package_name": "com.example.bakalarka"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1027507984607-hps69htr6lvgs36horvs5gpn524l6lmd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHQKum7qol-jUqsqP865FcRjI2iVlofvM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1027507984607-hps69htr6lvgs36horvs5gpn524l6lmd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1027507984607:android:d98bc465f058ea8f35f16a",
+        "android_client_info": {
+          "package_name": "com.example.bakalarkaupdate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1027507984607-hps69htr6lvgs36horvs5gpn524l6lmd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHQKum7qol-jUqsqP865FcRjI2iVlofvM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1027507984607-hps69htr6lvgs36horvs5gpn524l6lmd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegisterActivity">
+
+    <EditText
+        android:id="@+id/etUsernameRegister"
+        android:layout_width="227dp"
+        android:layout_height="48dp"
+        android:hint="lezec@abc.sk" />
+
+    <EditText
+        android:id="@+id/etPasswordRegister"
+        android:layout_width="227dp"
+        android:layout_height="48dp"
+        android:hint="password"
+        android:inputType="textPassword" />
+    <EditText
+        android:id="@+id/etNickNameRegister"
+        android:layout_width="227dp"
+        android:layout_height="48dp"
+        android:hint="nickname"
+        />
+    <EditText
+        android:id="@+id/etAgeRegister"
+        android:layout_width="227dp"
+        android:layout_height="48dp"
+        android:hint="age"
+        android:inputType="number"
+        />
+
+    <Button
+        android:id="@+id/buttonRegister"
+        android:layout_width="227dp"
+        android:layout_height="60dp"
+        android:text="Register" />
+
+</LinearLayout>
