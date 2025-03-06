@@ -56,6 +56,7 @@ public class RoutesFragment extends Fragment {
             Intent intent = new Intent(getActivity(), DetailRouteBoulderActivity.class);
             intent.putExtra("routeId", route.getId());
             intent.putExtra("centerId", centerId);
+            intent.putExtra("type", "route");
             startActivity(intent);
         });
 
