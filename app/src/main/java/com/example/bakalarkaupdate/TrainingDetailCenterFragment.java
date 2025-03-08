@@ -1,61 +1,62 @@
 package com.example.bakalarkaupdate;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class DetailCenterActivity extends AppCompatActivity {
-
+public class TrainingDetailCenterFragment extends Fragment {
     private FirebaseFirestore db;
-    String centerId,centerName;
+    String centerId;
     private Button btnBoulders, btnRoutes;
 
+
+    public TrainingDetailCenterFragment() {
+        // Required empty public constructor
+    }
+
+    public static TrainingDetailCenterFragment newInstance(String centerId) {
+        TrainingDetailCenterFragment fragment = new TrainingDetailCenterFragment();
+        Bundle args = new Bundle();
+        args.putString("centerId", centerId);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_detail_center);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-        centerId = getIntent().getStringExtra("centerId");
-
         db = FirebaseFirestore.getInstance();
-        btnBoulders = findViewById(R.id.BtnActivityDetailBoulders);
-        btnRoutes = findViewById(R.id.BtnActivityDetailRoutes);
 
-        btnBoulders.setVisibility(View.GONE);
-        btnRoutes.setVisibility(View.GONE);
+        if (getArguments() != null) {
+            centerId = getArguments().getString("centerId");
+        }
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_training_detail_center, container, false);
+
+        btnBoulders = view.findViewById(R.id.BtnTrainingActivityDetailBoulders);
+        btnRoutes = view.findViewById(R.id.BtnTrainingActivityDetailRoutes);
 
         checkAvailableCollections();
 
-        btnBoulders.setOnClickListener(v -> changeFragment(new BouldersFragment(), "BOULDERS"));
-        btnRoutes.setOnClickListener(v -> changeFragment(new RoutesFragment(),"ROUTES"));
-    }
+        btnBoulders.setOnClickListener(v -> loadFragment(TrainingBouldersFragment.newInstance(centerId), "BOULDERS"));
+        btnRoutes.setOnClickListener(v -> loadFragment(TrainingRoutesFragment.newInstance(centerId), "ROUTES"));
 
-    private void changeFragment(Fragment fragment, String fragmentType) {
-        Bundle bundle = new Bundle();
-        bundle.putString("centerId", centerId);
-        fragment.setArguments(bundle);
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_containerDetailCenter, fragment);
-        fragmentTransaction.commit();
-        buttonColour(fragmentType);
+        return view;
+
     }
 
     private void checkAvailableCollections() {
@@ -78,9 +79,9 @@ public class DetailCenterActivity extends AppCompatActivity {
                                     btnRoutes.setVisibility(View.VISIBLE);
                                 }
                                 if (routesExist) {
-                                    changeFragment(new RoutesFragment(),"ROUTES");
+                                    loadFragment(TrainingRoutesFragment.newInstance(centerId), "ROUTES");
                                 } else if (bouldersExist) {
-                                    changeFragment(new BouldersFragment(), "BOULDERS");
+                                    loadFragment(TrainingBouldersFragment.newInstance(centerId), "BOULDERS");
                                 }
                             })
                             .addOnFailureListener(e -> {
@@ -92,7 +93,15 @@ public class DetailCenterActivity extends AppCompatActivity {
                 });
     }
 
-    private void buttonColour(String fragmentType){
+    private void loadFragment(Fragment fragment, String fragmentType) {
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_containerTrainingDetailCenter, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+        buttonColour(fragmentType);
+    }
+
+    private void buttonColour(String fragmentType) {
         if (fragmentType.equals("BOULDERS")) {
             btnBoulders.setBackgroundColor(getResources().getColor(android.R.color.holo_green_light));
             btnRoutes.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
