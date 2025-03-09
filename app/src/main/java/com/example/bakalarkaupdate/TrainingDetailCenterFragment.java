@@ -49,6 +49,9 @@ public class TrainingDetailCenterFragment extends Fragment {
         btnBoulders = view.findViewById(R.id.BtnTrainingActivityDetailBoulders);
         btnRoutes = view.findViewById(R.id.BtnTrainingActivityDetailRoutes);
 
+        btnBoulders.setVisibility(View.GONE);
+        btnRoutes.setVisibility(View.GONE);
+
         checkAvailableCollections();
 
         btnBoulders.setOnClickListener(v -> loadFragment(TrainingBouldersFragment.newInstance(centerId), "BOULDERS"));

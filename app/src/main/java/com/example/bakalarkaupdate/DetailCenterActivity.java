@@ -33,6 +33,9 @@ public class DetailCenterActivity extends AppCompatActivity {
         });
         centerId = getIntent().getStringExtra("centerId");
 
+        Button btnBack = findViewById(R.id.btnDetailCenterBack);
+        btnBack.setOnClickListener(v -> finish());
+
         db = FirebaseFirestore.getInstance();
         btnBoulders = findViewById(R.id.BtnActivityDetailBoulders);
         btnRoutes = findViewById(R.id.BtnActivityDetailRoutes);
