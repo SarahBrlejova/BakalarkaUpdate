@@ -3,6 +3,7 @@ package com.example.bakalarkaupdate;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
@@ -57,6 +58,8 @@ public class TrainingFragment extends Fragment {
         isTraining = false;
         btnStart.setVisibility(View.VISIBLE);
         btnStop.setVisibility(View.GONE);
+
+        getChildFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
     private void loadFragment(Fragment fragment) {
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
