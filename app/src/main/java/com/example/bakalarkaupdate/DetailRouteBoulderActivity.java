@@ -34,7 +34,6 @@ public class DetailRouteBoulderActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        // Get the views from layout
         tvName = findViewById(R.id.tvDetailRouteBoulderName);
         tvColour = findViewById(R.id.tvDetailRouteBoulderColour);
         tvDifficulty = findViewById(R.id.tvDetailRouteBoulderDifficulty);
@@ -52,7 +51,7 @@ public class DetailRouteBoulderActivity extends AppCompatActivity {
 
         loadDetails();
 
-        Button btnBack = findViewById(R.id.btnBack);
+        Button btnBack = findViewById(R.id.btnDetailRouteBoulderFragmentBack);
         btnBack.setOnClickListener(v -> finish());
     }
 

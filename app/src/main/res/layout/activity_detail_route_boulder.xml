@@ -9,7 +9,7 @@
     tools:context=".DetailRouteBoulderActivity">
 
     <Button
-        android:id="@+id/btnBack"
+        android:id="@+id/btnDetailRouteBoulderFragmentBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"

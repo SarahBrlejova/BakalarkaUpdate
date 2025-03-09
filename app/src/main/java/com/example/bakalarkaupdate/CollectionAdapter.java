@@ -26,9 +26,9 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Co
 
     @NonNull
     @Override
-    public CollectionAdapter.CollectionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CollectionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(context).inflate(R.layout.collection_item, parent, false);
-        return new CollectionAdapter.CollectionViewHolder(v);
+        return new CollectionViewHolder(v);
     }
 
     @Override
@@ -36,7 +36,11 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Co
         Collection collection = collectionList.get(position);
         holder.tvCollectionName.setText(collection.getName());
         holder.tvCollectionDescription.setText(collection.getDescription());
-
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onItemClick(collection);
+            }
+        });
     }
 
     public static class CollectionViewHolder extends RecyclerView.ViewHolder {
@@ -55,7 +59,6 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Co
     public int getItemCount() {
         return collectionList.size();
     }
-
 
     public interface OnItemClickListener {
         void onItemClick(Collection collection);

@@ -26,14 +26,16 @@ public class FirestoreHelper {
 
     public void addTestData() {
 
-//        addCollection("vysoke_tatry", "Vysoké Tatry", "Summits in the High Tatras", "https://example.com/tatry.jpg");
-//        addBadge("vysoke_tatry", "lomnicky_stit", "Lomnický štít", 2634, "https://example.com/lomnicky.jpg");
-//        addBadge("vysoke_tatry", "gerlachovsky_stit", "Gerlachovský štít", 2655, "https://example.com/gerlach.jpg");
-//        addBadge("vysoke_tatry", "krivan", "Kriváň", 2494, "https://example.com/krivan.jpg");
-//
-//        addCollection("alps", "Alps", "Famous peaks of the Alps", "https://example.com/alps.jpg");
-//        addBadge("alps", "mont_blanc", "Mont Blanc", 4807, "https://example.com/montblanc.jpg");
-//        addBadge("alps", "matterhorn", "Matterhorn", 4478, "https://example.com/matterhorn.jpg");
+
+//        addCollection("mala_fatra", "Malá Fatra", "Highest peaks of Malá Fatra", "https://example.com/malafatra.jpg");
+//        addBadge("mala_fatra", "velky_krivan", "Veľký Kriváň", 1709, "https://example.com/velkykrivan.jpg");
+//        addBadge("mala_fatra", "stoh", "Stoh", 1608, "https://example.com/stoh.jpg");
+//        addBadge("mala_fatra", "chleb", "Chleb", 1646, "https://example.com/chleb.jpg");
+//        addBadge("mala_fatra", "rozsutec", "Veľký Rozsutec", 1610, "https://example.com/rozsutec.jpg");
+
+        addCollection("test", "test", "test", "https://example.com/alps.jpg");
+        addBadge("test", "test", "Mont test", 4807, "https://example.com/montblanc.jpg");
+        addBadge("test", "test", "test", 4478, "https://example.com/matterhorn.jpg");
 
 
 //        addCenter("La Skala", "Slovakia", "Žilina", "Kamenná ulica 123, Žilina, 010 01");

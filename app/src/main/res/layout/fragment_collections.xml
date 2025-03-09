@@ -15,11 +15,18 @@
         android:gravity="center"
         android:paddingBottom="16dp"/>
 
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewCollections"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:scrollbars="vertical"
         android:clipToPadding="false"/>
 
+    <FrameLayout
+        android:id="@+id/fragment_containerCollections"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
 </LinearLayout>

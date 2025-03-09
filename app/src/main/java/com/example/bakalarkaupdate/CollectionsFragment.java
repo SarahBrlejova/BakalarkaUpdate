@@ -3,9 +3,11 @@ package com.example.bakalarkaupdate;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,7 @@ import android.widget.Toast;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,16 +57,28 @@ public class CollectionsFragment extends Fragment {
 
         adapter = new CollectionAdapter(getContext(), collectionList);
         recyclerView.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(collection -> {
+            CollectionBadgesFragment fragment = CollectionBadgesFragment.newInstance(collection.getId());
+            recyclerView.setVisibility(View.GONE);
+            getView().findViewById(R.id.fragment_containerCollections).setVisibility(View.VISIBLE);
+
+            FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_containerCollections, fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        });
+
         loadData();
 
         return view;
     }
 
     private void loadData() {
-        firestoreListener = db.collection("collections")
+        db.collection("collections")
                 .addSnapshotListener((value, error) -> {
                     if (error != null) {
-                        Toast.makeText(getContext(), "Chyba s datami", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Error fetching data", Toast.LENGTH_LONG).show();
                         return;
                     }
                     collectionList.clear();
@@ -76,7 +91,21 @@ public class CollectionsFragment extends Fragment {
                     }
                     adapter.notifyDataSetChanged();
                 });
+
+        // 🔹 Fetch the latest data once at the start
+        db.collection("collections")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    collectionList.clear();
+                    for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                        Collection collection = doc.toObject(Collection.class);
+                        collection.setId(doc.getId());
+                        collectionList.add(collection);
+                    }
+                    adapter.notifyDataSetChanged();
+                });
     }
+
 
 
     @Override
