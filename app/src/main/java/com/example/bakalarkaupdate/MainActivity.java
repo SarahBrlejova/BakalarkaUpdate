@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        //        FirestoreHelper firestoreHelper = new FirestoreHelper();
+//        FirestoreHelper firestoreHelper = new FirestoreHelper();
 //        firestoreHelper.addTestData();
 
         buttonRegister = findViewById(R.id.BMainRegister);

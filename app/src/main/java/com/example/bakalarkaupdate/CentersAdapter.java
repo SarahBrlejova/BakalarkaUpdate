@@ -55,7 +55,6 @@ public class CentersAdapter extends RecyclerView.Adapter<CentersAdapter.CentersV
 
     public static class CentersViewHolder extends RecyclerView.ViewHolder {
         TextView tvCenterName, tvCenterAddress, tvCenterID;
-
         public CentersViewHolder(@NonNull View itemView) {
             super(itemView);
             tvCenterName = itemView.findViewById(R.id.TVCenterItemCenterName);

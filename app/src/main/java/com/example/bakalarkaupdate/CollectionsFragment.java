@@ -3,45 +3,35 @@ package com.example.bakalarkaupdate;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CollectionsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class CollectionsFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private RecyclerView recyclerView;
+    private CollectionAdapter adapter;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private List<Collection> collectionList;
+    private FirebaseFirestore db;
+    private ListenerRegistration firestoreListener;
 
-    public CollectionsFragment() {
-        // Required empty public constructor
-    }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CollectionsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static CollectionsFragment newInstance(String param1, String param2) {
+    public static CollectionsFragment newInstance() {
         CollectionsFragment fragment = new CollectionsFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -49,16 +39,51 @@ public class CollectionsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        db = FirebaseFirestore.getInstance();
+        collectionList = new ArrayList<>();
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_collections, container, false);
+        View view = inflater.inflate(R.layout.fragment_collections, container, false);
+
+        recyclerView = view.findViewById(R.id.recyclerViewCollections);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        adapter = new CollectionAdapter(getContext(), collectionList);
+        recyclerView.setAdapter(adapter);
+        loadData();
+
+        return view;
+    }
+
+    private void loadData() {
+        firestoreListener = db.collection("collections")
+                .addSnapshotListener((value, error) -> {
+                    if (error != null) {
+                        Toast.makeText(getContext(), "Chyba s datami", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    collectionList.clear();
+                    for (DocumentChange dc : value.getDocumentChanges()) {
+                        if (dc.getType() == DocumentChange.Type.ADDED) {
+                            Collection collection = dc.getDocument().toObject(Collection.class);
+                            collection.setId(dc.getDocument().getId());
+                            collectionList.add(collection);
+                        }
+                    }
+                    adapter.notifyDataSetChanged();
+                });
+    }
+
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (firestoreListener != null) {
+            firestoreListener.remove();
+        }
     }
 }

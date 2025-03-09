@@ -26,6 +26,16 @@ public class FirestoreHelper {
 
     public void addTestData() {
 
+//        addCollection("vysoke_tatry", "Vysoké Tatry", "Summits in the High Tatras", "https://example.com/tatry.jpg");
+//        addBadge("vysoke_tatry", "lomnicky_stit", "Lomnický štít", 2634, "https://example.com/lomnicky.jpg");
+//        addBadge("vysoke_tatry", "gerlachovsky_stit", "Gerlachovský štít", 2655, "https://example.com/gerlach.jpg");
+//        addBadge("vysoke_tatry", "krivan", "Kriváň", 2494, "https://example.com/krivan.jpg");
+//
+//        addCollection("alps", "Alps", "Famous peaks of the Alps", "https://example.com/alps.jpg");
+//        addBadge("alps", "mont_blanc", "Mont Blanc", 4807, "https://example.com/montblanc.jpg");
+//        addBadge("alps", "matterhorn", "Matterhorn", 4478, "https://example.com/matterhorn.jpg");
+
+
 //        addCenter("La Skala", "Slovakia", "Žilina", "Kamenná ulica 123, Žilina, 010 01");
 //        addCenter("K2 Bratislava", "Slovakia", "Bratislava", "Elektrárenská 1, Bratislava, 831 04");
 
@@ -94,5 +104,34 @@ public class FirestoreHelper {
                 .addOnSuccessListener(documentReference -> Log.d("Firestore", "Route pridaná!"))
                 .addOnFailureListener(e -> Log.e("Firestore", "Chyba pri pridávaní route", e));
     }
+
+    public void addCollection(String collectionId, String name, String description, String imageUrl) {
+        Map<String, Object> collection = new HashMap<>();
+        collection.put("name", name);
+        collection.put("description", description);
+        collection.put("imageUrl", imageUrl);
+        collection.put("created_at", FieldValue.serverTimestamp());
+
+        db.collection("collections").document(collectionId)
+                .set(collection)
+                .addOnSuccessListener(aVoid -> Log.d("Firestore", "Collection added: " + name))
+                .addOnFailureListener(e -> Log.e("Firestore", "Error adding collection", e));
+    }
+
+    public void addBadge(String collectionId, String badgeId, String name, int height, String imageUrl) {
+        Map<String, Object> badge = new HashMap<>();
+        badge.put("name", name);
+        badge.put("height", height);
+        badge.put("imageUrl", imageUrl);
+        badge.put("created_at", FieldValue.serverTimestamp());
+
+        db.collection("collections").document(collectionId)
+                .collection("badges").document(badgeId)
+                .set(badge)
+                .addOnSuccessListener(aVoid -> Log.d("Firestore", "Badge added: " + name))
+                .addOnFailureListener(e -> Log.e("Firestore", "Error adding badge", e));
+    }
+
+
 
 }
