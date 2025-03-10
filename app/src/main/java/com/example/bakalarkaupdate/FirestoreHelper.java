@@ -6,7 +6,9 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class FirestoreHelper {
@@ -51,6 +53,84 @@ public class FirestoreHelper {
 //        addRoute(centerId, "Tretia cesta", "C sektor", 20, "8b", "Juraj", "hnedá", "ťažká, ale populárna");
 //        addRoute(centerId, "Štvrtá cesta", "D sektor", 18, "7c", "Lucia", "červená", "nové a moderné");
     }
+
+    public void addTestTrainings() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        String userId = "YX4GTKwnXLNd3DABYYDMG6KfcIC3";
+        String centerId = "4mdlp9frrijYlQ88vYH3";
+
+        Map<String, Object> training1 = new HashMap<>();
+        training1.put("user_id", userId);
+        training1.put("center_id", centerId);
+        training1.put("date", "2024-03-09");
+        training1.put("time", 90);
+        training1.put("total_meters", 25);
+        training1.put("total_routes", 3);
+        training1.put("total_boulders", 4);
+
+        List<Map<String, Object>> completedRoutes1 = new ArrayList<>();
+        completedRoutes1.add(new HashMap<String, Object>() {{
+            put("route_id", "Am1ahyfODZj2b5MoC3NG");
+            put("times_climbed", 2);
+        }});
+        completedRoutes1.add(new HashMap<String, Object>() {{
+            put("route_id", "Q1uiC2tBPUUs3mZyUoT1p");
+            put("times_climbed", 1);
+        }});
+        training1.put("completed_routes", completedRoutes1);
+
+        List<Map<String, Object>> completedBoulders1 = new ArrayList<>();
+        completedBoulders1.add(new HashMap<String, Object>() {{
+            put("boulder_id", "4PE78UyQxvVoQF9Gc2vs");
+            put("times_climbed", 3);
+        }});
+        completedBoulders1.add(new HashMap<String, Object>() {{
+            put("boulder_id", "9z78KJV6pc1M6hgntHMP");
+            put("times_climbed", 1);
+        }});
+        training1.put("completed_boulders", completedBoulders1);
+
+        Map<String, Object> training2 = new HashMap<>();
+        training2.put("user_id", userId);
+        training2.put("center_id", centerId);
+        training2.put("date", "2024-03-10");
+        training2.put("time", 120);
+        training2.put("total_meters", 40);
+        training2.put("total_routes", 4);
+        training2.put("total_boulders", 5);
+
+        List<Map<String, Object>> completedRoutes2 = new ArrayList<>();
+        completedRoutes2.add(new HashMap<String, Object>() {{
+            put("route_id", "qUgsUZVH3qJM0A35vnKb");
+            put("times_climbed", 1);
+        }});
+        completedRoutes2.add(new HashMap<String, Object>() {{
+            put("route_id", "zPah4TEPFL4zDTHrJr3k");
+            put("times_climbed", 3);
+        }});
+        training2.put("completed_routes", completedRoutes2);
+
+        List<Map<String, Object>> completedBoulders2 = new ArrayList<>();
+        completedBoulders2.add(new HashMap<String, Object>() {{
+            put("boulder_id", "SLdFMGboBJgo2ui3HrN2");
+            put("times_climbed", 2);
+        }});
+        completedBoulders2.add(new HashMap<String, Object>() {{
+            put("boulder_id", "YHFKxt0KdIzWsNmeFaPs");
+            put("times_climbed", 4);
+        }});
+        training2.put("completed_boulders", completedBoulders2);
+
+        db.collection("trainings").add(training1)
+                .addOnSuccessListener(documentReference -> Log.d("Firestore", "Prvý tréning bol pridaný!"))
+                .addOnFailureListener(e -> Log.e("Firestore", "Chyba pri pridávaní prvého tréningu", e));
+
+        db.collection("trainings").add(training2)
+                .addOnSuccessListener(documentReference -> Log.d("Firestore", "Druhý tréning bol pridaný!"))
+                .addOnFailureListener(e -> Log.e("Firestore", "Chyba pri pridávaní druhého tréningu", e));
+    }
+
 
     public void addCenter(String name, String country, String city, String address) {
         Map<String, Object> center = new HashMap<>();
