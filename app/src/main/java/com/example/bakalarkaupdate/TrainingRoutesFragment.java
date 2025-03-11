@@ -1,12 +1,12 @@
 package com.example.bakalarkaupdate;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,15 +21,15 @@ import java.util.List;
 
 
 public class TrainingRoutesFragment extends Fragment {
-    private FirebaseFirestore db;
     String centerId;
     String trainingId;
+    boolean countUp;
+    FirestoreHelper firestoreHelper;
+    private FirebaseFirestore db;
     private RecyclerView recyclerView;
     private RoutesBouldersTrainingAdapter adapter;
     private List<RouteBoulder> routesList;
     private ListenerRegistration firestoreListener;
-
-    FirestoreHelper firestoreHelper;
 
     public TrainingRoutesFragment() {
         // Required empty public constructor
@@ -63,26 +63,31 @@ public class TrainingRoutesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_training_routes, container, false);
         recyclerView = view.findViewById(R.id.recyclerViewTrainingRoutes);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new RoutesBouldersTrainingAdapter(getContext(),routesList);
+        adapter = new RoutesBouldersTrainingAdapter(getContext(), routesList);
         recyclerView.setAdapter(adapter);
 
         adapter.setOnItemClickListener(route -> {
-            route.addClimbs();
+            route.countUpClimbs();
             int position = routesList.indexOf(route);
             if (position != -1) {
                 adapter.notifyItemChanged(position);
             }
+            countUp = true;
+            firestoreHelper.updateTrainingMetersRoutes(trainingId, countUp, route.getHeight());
             firestoreHelper.updateTrainingRoutes(trainingId, route.getId(), route.getClimbs(), route.getDifficulty());
         });
         adapter.setOnItemLongClickListener(route -> {
-            route.deleteClimbs();
+            route.countDownClimbs();
             int position = routesList.indexOf(route);
             if (position != -1) {
                 adapter.notifyItemChanged(position);
             }
+
+            countUp = false;
+            firestoreHelper.updateTrainingMetersRoutes(trainingId, countUp, route.getHeight());
+
             firestoreHelper.updateTrainingRoutes(trainingId, route.getId(), route.getClimbs(), route.getDifficulty());
         });
-
 
         loadData();
 

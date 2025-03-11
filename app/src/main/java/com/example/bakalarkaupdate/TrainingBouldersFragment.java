@@ -23,11 +23,12 @@ public class TrainingBouldersFragment extends Fragment {
 
     private FirebaseFirestore db;
     String centerId;
+    boolean countUp;
     private RecyclerView recyclerView;
     private RoutesBouldersTrainingAdapter adapter;
     private List<RouteBoulder> boulderList;
     private ListenerRegistration firestoreListener;
-
+    private FirestoreHelper firestoreHelper;
     String trainingId;
 
     public TrainingBouldersFragment() {
@@ -53,6 +54,7 @@ public class TrainingBouldersFragment extends Fragment {
             centerId = getArguments().getString("centerId");
             trainingId = getArguments().getString("trainingId");
         }
+        firestoreHelper = new FirestoreHelper();
     }
 
     @Override
@@ -63,6 +65,27 @@ public class TrainingBouldersFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new RoutesBouldersTrainingAdapter(getContext(),boulderList);
         recyclerView.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(boulder -> {
+            boulder.countUpClimbs();
+            int position = boulderList.indexOf(boulder);
+            if (position != -1) {
+                adapter.notifyItemChanged(position);
+            }
+            countUp = true;
+            firestoreHelper.updateTrainingMetersBoulders(trainingId, countUp, boulder.getHeight());
+            firestoreHelper.updateTrainingBoulders(trainingId, boulder.getId(), boulder.getClimbs(), boulder.getDifficulty());
+        });
+        adapter.setOnItemLongClickListener(boulder -> {
+            boulder.countDownClimbs();
+            int position = boulderList.indexOf(boulder);
+            if (position != -1) {
+                adapter.notifyItemChanged(position);
+            }
+            countUp = false;
+            firestoreHelper.updateTrainingMetersBoulders(trainingId, countUp, boulder.getHeight());
+            firestoreHelper.updateTrainingBoulders(trainingId, boulder.getId(), boulder.getClimbs(), boulder.getDifficulty());
+        });
 
         loadData();
         return view;

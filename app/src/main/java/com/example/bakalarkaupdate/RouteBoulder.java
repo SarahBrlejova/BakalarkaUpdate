@@ -114,13 +114,13 @@ public class RouteBoulder {
     public int getClimbs() {
         return timesClimbed;
     }
-    public void addClimbs() {
-        this.timesClimbed++;
+    public void countUpClimbs() {
+        timesClimbed++;
     }
 
-    public void deleteClimbs() {
-        if (this.timesClimbed > 0) {
-            this.timesClimbed--;
+    public void countDownClimbs() {
+        if (timesClimbed > 0) {
+            timesClimbed--;
         }
     }
 }
