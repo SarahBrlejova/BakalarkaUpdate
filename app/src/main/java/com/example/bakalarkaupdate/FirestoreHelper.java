@@ -77,6 +77,15 @@ public class FirestoreHelper {
                 .addOnFailureListener(e -> Log.e("Firestore", "Error starting training", e));
     }
 
+    public void updateTrainingTime(String trainingId, long totalMinutes) {
+        DocumentReference trainingRef = db.collection("trainings").document(trainingId);
+
+        trainingRef.update("time", totalMinutes)
+                .addOnSuccessListener(aVoid -> Log.d("Firestore", "Training time updated: " + totalMinutes + " min"))
+                .addOnFailureListener(e -> Log.e("Firestore", "Error updating training time", e));
+    }
+
+
     public void updateTrainingRoutes(String trainingId, String routeId, int timesClimbed, String difficulty) {
         DocumentReference trainingRef = db.collection("trainings").document(trainingId);
         if (timesClimbed > 0) {

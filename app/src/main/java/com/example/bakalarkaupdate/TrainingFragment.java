@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,8 @@ public class TrainingFragment extends Fragment {
     private long pausedTime = 0L;
     private Handler handler = new Handler();
     private Runnable timerRunnable;
+    private String trainingId;
+    private FirestoreHelper firestoreHelper;
 
 
     public TrainingFragment() {
@@ -34,6 +37,7 @@ public class TrainingFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        firestoreHelper = new FirestoreHelper();
     }
 
     @Override
@@ -90,6 +94,14 @@ public class TrainingFragment extends Fragment {
         btnStop.setVisibility(View.GONE);
         handler.removeCallbacks(timerRunnable);
 
+        long milisecTime = SystemClock.elapsedRealtime() - startTime;
+        long time = milisecTime / (1000 * 60);
+
+        if (trainingId != null) {
+            Log.d("cas", "cas " + time);
+            firestoreHelper.updateTrainingTime(trainingId, time);
+        }
+
         startTime = 0L;
         pausedTime = 0L;
 
@@ -110,5 +122,12 @@ public class TrainingFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         handler.removeCallbacks(timerRunnable);
+    }
+    public void setTrainingId(String trainingId) {
+        this.trainingId = trainingId;
+    }
+
+    public String getTrainingId() {
+        return trainingId;
     }
 }

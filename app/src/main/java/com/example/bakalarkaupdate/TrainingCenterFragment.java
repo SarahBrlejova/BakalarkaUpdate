@@ -58,7 +58,8 @@ public class TrainingCenterFragment extends Fragment {
             firestoreHelper.startTraining(centerId, new FirestoreHelper.GetNewCreatedID() {
                 @Override
                 public void onSuccess(String trainingId) {
-                    Log.d("Firestore", "New Training ID: " + trainingId);
+                    TrainingFragment parentFragment = (TrainingFragment) getParentFragment();
+                    parentFragment.setTrainingId(trainingId);
 
                     TrainingDetailCenterFragment detailFragment = TrainingDetailCenterFragment.newInstance(centerId, trainingId);
                     getParentFragmentManager().beginTransaction()
