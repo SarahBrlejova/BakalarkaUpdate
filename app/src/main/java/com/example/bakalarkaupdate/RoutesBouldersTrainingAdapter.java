@@ -45,6 +45,9 @@ public class RoutesBouldersTrainingAdapter extends RecyclerView.Adapter<RoutesBo
         holder.tvTrainingRouteBoulderID.setText(routeBoulder.getId());
         holder.tvTrainingRouteBoulderTimesClimbed.setText("Prelezy: " + routeBoulder.getClimbs());
 
+        int color = changeColor(context, routeBoulder.getColour());
+        holder.tvTrainingRouteBoulderName.setTextColor(color);
+        holder.tvTrainingRouteBoulderDifficulty.setTextColor(color);
 
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
@@ -88,5 +91,14 @@ public class RoutesBouldersTrainingAdapter extends RecyclerView.Adapter<RoutesBo
 
     public void setOnItemLongClickListener(OnItemLongClickListener listener) {
         this.longListener = listener;
+    }
+
+    public int changeColor(Context context, String colorName){
+        int colorId = context.getResources().getIdentifier(colorName, "color", context.getPackageName());
+
+        if (colorId == 0) {
+            return context.getResources().getColor(R.color.black);
+        }
+        return context.getResources().getColor(colorId);
     }
 }
