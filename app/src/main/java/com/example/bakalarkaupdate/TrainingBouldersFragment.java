@@ -24,20 +24,22 @@ public class TrainingBouldersFragment extends Fragment {
     private FirebaseFirestore db;
     String centerId;
     private RecyclerView recyclerView;
-    private RoutesBouldersAdapter adapter;
+    private RoutesBouldersTrainingAdapter adapter;
     private List<RouteBoulder> boulderList;
     private ListenerRegistration firestoreListener;
 
+    String trainingId;
 
     public TrainingBouldersFragment() {
         // Required empty public constructor
     }
 
 
-    public static TrainingBouldersFragment newInstance(String centerId) {
+    public static TrainingBouldersFragment newInstance(String centerId, String trainingId) {
         TrainingBouldersFragment fragment = new TrainingBouldersFragment();
         Bundle args = new Bundle();
         args.putString("centerId", centerId);
+        args.putString("trainingId", trainingId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -49,6 +51,7 @@ public class TrainingBouldersFragment extends Fragment {
         boulderList = new ArrayList<>();
         if (getArguments() != null) {
             centerId = getArguments().getString("centerId");
+            trainingId = getArguments().getString("trainingId");
         }
     }
 
@@ -58,7 +61,7 @@ public class TrainingBouldersFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_training_boulders, container, false);
         recyclerView = view.findViewById(R.id.recyclerViewTrainingBoulders);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new RoutesBouldersAdapter(getContext(),boulderList);
+        adapter = new RoutesBouldersTrainingAdapter(getContext(),boulderList);
         recyclerView.setAdapter(adapter);
 
         loadData();

@@ -12,29 +12,27 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class RoutesBouldersAdapter extends RecyclerView.Adapter<RoutesBouldersAdapter.RoutesBouldersViewHolder>{
+public class RoutesBouldersTrainingAdapter extends RecyclerView.Adapter<RoutesBouldersTrainingAdapter.RoutesBouldersTrainingViewHolder>{
 
     Context context;
     List<RouteBoulder> routeBoulderList;
     private OnItemClickListener listener;
     private OnItemLongClickListener longListener;
 
-
-    public RoutesBouldersAdapter(Context context, List<RouteBoulder> routeBoulderList) {
+    public RoutesBouldersTrainingAdapter(Context context, List<RouteBoulder> routeBoulderList) {
         this.context = context;
         this.routeBoulderList = routeBoulderList;
     }
 
     @NonNull
     @Override
-    public RoutesBouldersAdapter.RoutesBouldersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.route_boulder_item, parent, false);
-        return new RoutesBouldersAdapter.RoutesBouldersViewHolder(v);
+    public RoutesBouldersTrainingAdapter.RoutesBouldersTrainingViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(context).inflate(R.layout.route_boulder_training_item, parent, false);
+        return new RoutesBouldersTrainingAdapter.RoutesBouldersTrainingViewHolder(v);
     }
 
-
     @Override
-    public void onBindViewHolder(@NonNull RoutesBouldersAdapter.RoutesBouldersViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RoutesBouldersTrainingAdapter.RoutesBouldersTrainingViewHolder holder, int position) {
         RouteBoulder routeBoulder = routeBoulderList.get(position);
         if (routeBoulder == null) {
             Log.e("RoutesBouldersAdapter", "RouteBoulder is null at position: " + position);
@@ -42,9 +40,11 @@ public class RoutesBouldersAdapter extends RecyclerView.Adapter<RoutesBouldersAd
         }
         Log.d("RoutesBouldersAdapter", "Binding route: " + routeBoulder.getName() + ", Active: " + routeBoulder.isIs_active());
 
-        holder.tvRouteBoulderName.setText(routeBoulder.getName());
-        holder.tvRouteBoulderDifficulty.setText(routeBoulder.getDifficulty());
-        holder.TVRouteBoulderID.setText(routeBoulder.getId());
+        holder.tvTrainingRouteBoulderName.setText(routeBoulder.getName());
+        holder.tvTrainingRouteBoulderDifficulty.setText(routeBoulder.getDifficulty());
+        holder.tvTrainingRouteBoulderID.setText(routeBoulder.getId());
+        holder.tvTrainingRouteBoulderTimesClimbed.setText("Prelezy: " + routeBoulder.getClimbs());
+
 
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
@@ -64,15 +64,15 @@ public class RoutesBouldersAdapter extends RecyclerView.Adapter<RoutesBouldersAd
         return routeBoulderList.size();
     }
 
+    public static class RoutesBouldersTrainingViewHolder extends RecyclerView.ViewHolder {
+        TextView tvTrainingRouteBoulderName, tvTrainingRouteBoulderDifficulty, tvTrainingRouteBoulderID, tvTrainingRouteBoulderTimesClimbed;
 
-    public static class RoutesBouldersViewHolder extends RecyclerView.ViewHolder {
-        TextView tvRouteBoulderName, tvRouteBoulderDifficulty, TVRouteBoulderID;
-
-        public RoutesBouldersViewHolder(@NonNull View itemView) {
+        public RoutesBouldersTrainingViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvRouteBoulderName = itemView.findViewById(R.id.tvRouteBoulderName);
-            tvRouteBoulderDifficulty = itemView.findViewById(R.id.tvRouteBoulderDifficulty);
-            TVRouteBoulderID = itemView.findViewById(R.id.TVRouteBoulderID);
+            tvTrainingRouteBoulderName = itemView.findViewById(R.id.tvRouteBoulderTrainingName);
+            tvTrainingRouteBoulderDifficulty = itemView.findViewById(R.id.tvRouteBoulderTrainingDifficulty);
+            tvTrainingRouteBoulderID = itemView.findViewById(R.id.TVRouteTrainingBoulderID);
+            tvTrainingRouteBoulderTimesClimbed = itemView.findViewById(R.id.tvTrainingTimesClimbed);
         }
     }
 
@@ -89,6 +89,4 @@ public class RoutesBouldersAdapter extends RecyclerView.Adapter<RoutesBouldersAd
     public void setOnItemLongClickListener(OnItemLongClickListener listener) {
         this.longListener = listener;
     }
-
-
 }

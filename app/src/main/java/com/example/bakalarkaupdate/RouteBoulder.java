@@ -13,6 +13,7 @@ public class RouteBoulder {
     private String notes;
     private String sektor;
     private String setter;
+    private int timesClimbed = 0;
 
     public RouteBoulder() {
     }
@@ -108,5 +109,18 @@ public class RouteBoulder {
 
     public void setSetter(String setter) {
         this.setter = setter;
+    }
+
+    public int getClimbs() {
+        return timesClimbed;
+    }
+    public void addClimbs() {
+        this.timesClimbed++;
+    }
+
+    public void deleteClimbs() {
+        if (this.timesClimbed > 0) {
+            this.timesClimbed--;
+        }
     }
 }

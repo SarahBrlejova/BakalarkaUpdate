@@ -27,6 +27,8 @@ public class TrainingCenterFragment extends Fragment {
     private List<Center> centersList;
     private FirebaseFirestore db;
     private ListenerRegistration firestoreListener;
+    private FirestoreHelper firestoreHelper;
+
 
     public TrainingCenterFragment() {
         // Required empty public constructor
@@ -39,7 +41,7 @@ public class TrainingCenterFragment extends Fragment {
         super.onCreate(savedInstanceState);
         db = FirebaseFirestore.getInstance();
         centersList = new ArrayList<>();
-
+        firestoreHelper = new FirestoreHelper();
     }
 
     @Override
@@ -50,13 +52,22 @@ public class TrainingCenterFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new CentersAdapter(getContext(), centersList);
         recyclerView.setAdapter(adapter);
-        adapter.setOnItemClickListener(center -> {
-            TrainingDetailCenterFragment detailFragment = TrainingDetailCenterFragment.newInstance(center.getId());
 
-            getParentFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_containerTraining, detailFragment)
-                    .addToBackStack(null)
-                    .commit();
+        adapter.setOnItemClickListener(center -> {
+            String centerId = center.getId();
+            firestoreHelper.startTraining(centerId, new FirestoreHelper.GetNewCreatedID() {
+                @Override
+                public void onSuccess(String trainingId) {
+                    Log.d("Firestore", "New Training ID: " + trainingId);
+
+                    TrainingDetailCenterFragment detailFragment = TrainingDetailCenterFragment.newInstance(centerId, trainingId);
+                    getParentFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_containerTraining, detailFragment)
+                            .addToBackStack(null)
+                            .commit();
+                }
+            });
+
         });
         loadData();
         return view;

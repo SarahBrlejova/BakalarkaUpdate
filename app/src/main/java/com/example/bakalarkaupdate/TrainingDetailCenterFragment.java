@@ -15,6 +15,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class TrainingDetailCenterFragment extends Fragment {
     private FirebaseFirestore db;
     String centerId;
+    String trainingId;
     private Button btnBoulders, btnRoutes;
 
 
@@ -22,10 +23,11 @@ public class TrainingDetailCenterFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static TrainingDetailCenterFragment newInstance(String centerId) {
+    public static TrainingDetailCenterFragment newInstance(String centerId, String trainingId) {
         TrainingDetailCenterFragment fragment = new TrainingDetailCenterFragment();
         Bundle args = new Bundle();
         args.putString("centerId", centerId);
+        args.putString("trainingId", trainingId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -37,6 +39,7 @@ public class TrainingDetailCenterFragment extends Fragment {
 
         if (getArguments() != null) {
             centerId = getArguments().getString("centerId");
+            trainingId = getArguments().getString("trainingId");
         }
 
     }
@@ -54,8 +57,8 @@ public class TrainingDetailCenterFragment extends Fragment {
 
         checkAvailableCollections();
 
-        btnBoulders.setOnClickListener(v -> loadFragment(TrainingBouldersFragment.newInstance(centerId), "BOULDERS"));
-        btnRoutes.setOnClickListener(v -> loadFragment(TrainingRoutesFragment.newInstance(centerId), "ROUTES"));
+        btnBoulders.setOnClickListener(v -> loadFragment(TrainingBouldersFragment.newInstance(centerId, trainingId), "BOULDERS"));
+        btnRoutes.setOnClickListener(v -> loadFragment(TrainingRoutesFragment.newInstance(centerId, trainingId), "ROUTES"));
 
 
         return view;
@@ -82,9 +85,9 @@ public class TrainingDetailCenterFragment extends Fragment {
                                     btnRoutes.setVisibility(View.VISIBLE);
                                 }
                                 if (routesExist) {
-                                    loadFragment(TrainingRoutesFragment.newInstance(centerId), "ROUTES");
+                                    loadFragment(TrainingRoutesFragment.newInstance(centerId, trainingId), "ROUTES");
                                 } else if (bouldersExist) {
-                                    loadFragment(TrainingBouldersFragment.newInstance(centerId), "BOULDERS");
+                                    loadFragment(TrainingBouldersFragment.newInstance(centerId, trainingId), "BOULDERS");
                                 }
                             })
                             .addOnFailureListener(e -> {

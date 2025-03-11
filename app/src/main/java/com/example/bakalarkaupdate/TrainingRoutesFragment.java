@@ -23,20 +23,24 @@ import java.util.List;
 public class TrainingRoutesFragment extends Fragment {
     private FirebaseFirestore db;
     String centerId;
+    String trainingId;
     private RecyclerView recyclerView;
-    private RoutesBouldersAdapter adapter;
+    private RoutesBouldersTrainingAdapter adapter;
     private List<RouteBoulder> routesList;
     private ListenerRegistration firestoreListener;
+
+    FirestoreHelper firestoreHelper;
 
     public TrainingRoutesFragment() {
         // Required empty public constructor
     }
 
 
-    public static TrainingRoutesFragment newInstance(String centerId) {
+    public static TrainingRoutesFragment newInstance(String centerId, String trainingId) {
         TrainingRoutesFragment fragment = new TrainingRoutesFragment();
         Bundle args = new Bundle();
         args.putString("centerId", centerId);
+        args.putString("trainingId", trainingId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -48,8 +52,9 @@ public class TrainingRoutesFragment extends Fragment {
         routesList = new ArrayList<>();
         if (getArguments() != null) {
             centerId = getArguments().getString("centerId");
+            trainingId = getArguments().getString("trainingId");
         }
-
+        firestoreHelper = new FirestoreHelper();
     }
 
     @Override
@@ -58,16 +63,26 @@ public class TrainingRoutesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_training_routes, container, false);
         recyclerView = view.findViewById(R.id.recyclerViewTrainingRoutes);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new RoutesBouldersAdapter(getContext(),routesList);
+        adapter = new RoutesBouldersTrainingAdapter(getContext(),routesList);
         recyclerView.setAdapter(adapter);
 
-//        adapter.setOnItemClickListener(route -> {
-//            Intent intent = new Intent(getActivity(), DetailRouteBoulderActivity.class);
-//            intent.putExtra("routeId", route.getId());
-//            intent.putExtra("centerId", centerId);
-//            intent.putExtra("type", "route");
-//            startActivity(intent);
-//        });
+        adapter.setOnItemClickListener(route -> {
+            route.addClimbs();
+            int position = routesList.indexOf(route);
+            if (position != -1) {
+                adapter.notifyItemChanged(position);
+            }
+            firestoreHelper.updateTrainingRoutes(trainingId, route.getId(), route.getClimbs(), route.getDifficulty());
+        });
+        adapter.setOnItemLongClickListener(route -> {
+            route.deleteClimbs();
+            int position = routesList.indexOf(route);
+            if (position != -1) {
+                adapter.notifyItemChanged(position);
+            }
+            firestoreHelper.updateTrainingRoutes(trainingId, route.getId(), route.getClimbs(), route.getDifficulty());
+        });
+
 
         loadData();
 
@@ -79,14 +94,12 @@ public class TrainingRoutesFragment extends Fragment {
             Toast.makeText(getContext(), "Chyba: centerId nie je dostupné", Toast.LENGTH_LONG).show();
             return;
         }
-
         firestoreListener = db.collection("centers")
                 .document(centerId)
                 .collection("routes")
                 .whereEqualTo("is_active", true)
                 .addSnapshotListener((querySnapshot, error) -> {
                     if (error != null) {
-                        // handle error
                         return;
                     }
                     if (querySnapshot != null) {
