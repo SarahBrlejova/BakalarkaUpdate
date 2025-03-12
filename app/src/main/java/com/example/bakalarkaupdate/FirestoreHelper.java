@@ -2,9 +2,14 @@ package com.example.bakalarkaupdate;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -83,6 +88,50 @@ public class FirestoreHelper {
         trainingRef.update("time", totalMinutes)
                 .addOnSuccessListener(aVoid -> Log.d("Firestore", "Training time updated: " + totalMinutes + " min"))
                 .addOnFailureListener(e -> Log.e("Firestore", "Error updating training time", e));
+    }
+
+    public void updateUserClimbedMeters(String trainingId) {
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        DocumentReference trainingRef = db.collection("trainings").document(trainingId);
+        DocumentReference userRef = db.collection("users").document(userId);
+        trainingRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> trainingTask) {
+                if (trainingTask.isSuccessful()) {
+                    DocumentSnapshot trainingSnapshot = trainingTask.getResult();
+                    if (trainingSnapshot.exists()) {
+                        long trainingMeters = trainingSnapshot.getLong("total_meters");
+                        userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> userTask) {
+                                if (userTask.isSuccessful()) {
+                                    DocumentSnapshot userDocumnent = userTask.getResult();
+                                    if (userDocumnent.exists()) {
+                                        long userTotalMeters = userDocumnent.getLong("total_meters");
+                                        long userAvailableMeters = userDocumnent.getLong("available_meters");
+                                        long totalMeters = userTotalMeters + trainingMeters;
+                                        long availableMeters = userAvailableMeters + trainingMeters;
+
+                                        userRef.update("total_meters", totalMeters, "available_meters", availableMeters)
+                                                .addOnSuccessListener(aVoid -> Log.d("Firestore", "User meters updated successfully!"))
+                                                .addOnFailureListener(e -> Log.e("Firestore", "Error updating user meters", e));
+                                    } else {
+                                        Log.d("Firestore", "No such user document");
+                                    }
+                                } else {
+                                    Log.e("Firestore", "User document fetch failed", userTask.getException());
+                                }
+                            }
+                        });
+                    } else {
+                        Log.d("Firestore", "No such training document");
+                    }
+                } else {
+                    Log.e("Firestore", "Training document fetch failed", trainingTask.getException());
+                }
+            }
+        });
     }
 
 

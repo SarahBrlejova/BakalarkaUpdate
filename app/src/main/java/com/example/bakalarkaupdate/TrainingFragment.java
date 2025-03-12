@@ -100,6 +100,7 @@ public class TrainingFragment extends Fragment {
         if (trainingId != null) {
             Log.d("cas", "cas " + time);
             firestoreHelper.updateTrainingTime(trainingId, time);
+            firestoreHelper.updateUserClimbedMeters(trainingId);
         }
 
         startTime = 0L;
