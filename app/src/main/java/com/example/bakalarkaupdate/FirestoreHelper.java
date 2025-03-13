@@ -36,8 +36,8 @@ public class FirestoreHelper {
         Map<String, Object> training = new HashMap<>();
         training.put("user_id", userId);
         training.put("center_id", centerId);
-        training.put("date", FieldValue.serverTimestamp());
-        training.put("time", 0);
+        training.put("startTimestamp", FieldValue.serverTimestamp()); // 🔥 Set start time
+        training.put("endTimestamp", null); // 🔥 Initially null, updated when training ends
         training.put("total_meters", 0);
         training.put("total_routes", 0);
         training.put("total_boulders", 0);
@@ -47,19 +47,21 @@ public class FirestoreHelper {
         db.collection("trainings").add(training)
                 .addOnSuccessListener(documentReference -> {
                     String trainingId = documentReference.getId();
-                    Log.d("f", "Training started");
+                    Log.d("Firestore", "Training started: " + trainingId);
                     getNewCreatedID.onSuccess(trainingId);
                 })
-                .addOnFailureListener(e -> Log.e("F", "Error wit starTraining", e));
+                .addOnFailureListener(e -> Log.e("Firestore", "Error starting training", e));
     }
 
-    public void updateTrainingTime(String trainingId, long totalMinutes) {
+
+    public void endTraining(String trainingId) {
         DocumentReference trainingRef = db.collection("trainings").document(trainingId);
 
-        trainingRef.update("time", totalMinutes)
-                .addOnSuccessListener(aVoid -> Log.d("F", "Training time updated"))
-                .addOnFailureListener(e -> Log.e("F", "Error with time", e));
+        trainingRef.update("endTimestamp", FieldValue.serverTimestamp())
+                .addOnSuccessListener(aVoid -> Log.d("Firestore", "Training ended successfully!"))
+                .addOnFailureListener(e -> Log.e("Firestore", "Error ending training", e));
     }
+
 
     public void updateUserClimbedMeters(String trainingId) {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();

@@ -98,8 +98,7 @@ public class TrainingFragment extends Fragment {
         long time = milisecTime / (1000 * 60);
 
         if (trainingId != null) {
-            Log.d("cas", "cas " + time);
-            firestoreHelper.updateTrainingTime(trainingId, time);
+            firestoreHelper.endTraining(trainingId);
             firestoreHelper.updateUserClimbedMeters(trainingId);
         }
 
