@@ -40,7 +40,7 @@ public class RoutesBouldersAdapter extends RecyclerView.Adapter<RoutesBouldersAd
             Log.e("RoutesBouldersAdapter", "RouteBoulder is null at position: " + position);
             return;
         }
-        Log.d("RoutesBouldersAdapter", "Binding route: " + routeBoulder.getName() + ", Active: " + routeBoulder.isIs_active());
+        Log.d("RoutesBouldersAdapter", "Binding route: " + routeBoulder.getName() + ", Active: " + routeBoulder.isActive());
 
         holder.tvRouteBoulderName.setText(routeBoulder.getName());
         holder.tvRouteBoulderDifficulty.setText(routeBoulder.getDifficulty());

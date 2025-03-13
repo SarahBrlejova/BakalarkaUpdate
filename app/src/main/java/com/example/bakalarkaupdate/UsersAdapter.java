@@ -3,20 +3,12 @@ package com.example.bakalarkaupdate;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.List;
 
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHolder> {
 
@@ -44,8 +36,8 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
     @Override
     public void onBindViewHolder(@NonNull UsersAdapter.UsersViewHolder holder, int position) {
         holder.tvUserItemNick.setText(user.getNick());
-        holder.tvUserItemTotalMeters.setText(String.valueOf(user.getTotal_meters()));
-        holder.tvUserItemAvailableMeters.setText(String.valueOf(user.getAvailable_meters()));
+        holder.tvUserItemTotalMeters.setText(String.valueOf(user.getTotalMeters()));
+        holder.tvUserItemAvailableMeters.setText(String.valueOf(user.getAvailableMeters()));
 
     }
 

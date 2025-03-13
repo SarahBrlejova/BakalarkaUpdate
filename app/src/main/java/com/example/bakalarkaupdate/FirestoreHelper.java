@@ -34,20 +34,19 @@ public class FirestoreHelper {
     public void startTraining(String centerId, GetNewCreatedID getNewCreatedID) {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Map<String, Object> training = new HashMap<>();
-        training.put("user_id", userId);
-        training.put("center_id", centerId);
-        training.put("startTimestamp", FieldValue.serverTimestamp()); // 🔥 Set start time
-        training.put("endTimestamp", null); // 🔥 Initially null, updated when training ends
-        training.put("total_meters", 0);
-        training.put("total_routes", 0);
-        training.put("total_boulders", 0);
-        training.put("completed_routes", new HashMap<>());
-        training.put("completed_boulders", new HashMap<>());
+        training.put("userId", userId);
+        training.put("centerId", centerId);
+        training.put("startTraining", FieldValue.serverTimestamp());
+        training.put("endTraining", null);
+        training.put("totalMeters", 0);
+        training.put("totalRoutes", 0);
+        training.put("totalBoulders", 0);
+        training.put("completedRoutes", new HashMap<>());
+        training.put("completedBoulders", new HashMap<>());
 
         db.collection("trainings").add(training)
                 .addOnSuccessListener(documentReference -> {
                     String trainingId = documentReference.getId();
-                    Log.d("Firestore", "Training started: " + trainingId);
                     getNewCreatedID.onSuccess(trainingId);
                 })
                 .addOnFailureListener(e -> Log.e("Firestore", "Error starting training", e));
@@ -57,9 +56,9 @@ public class FirestoreHelper {
     public void endTraining(String trainingId) {
         DocumentReference trainingRef = db.collection("trainings").document(trainingId);
 
-        trainingRef.update("endTimestamp", FieldValue.serverTimestamp())
-                .addOnSuccessListener(aVoid -> Log.d("Firestore", "Training ended successfully!"))
-                .addOnFailureListener(e -> Log.e("Firestore", "Error ending training", e));
+        trainingRef.update("endTraining", FieldValue.serverTimestamp())
+                .addOnSuccessListener(aVoid -> Log.d("F", "Training time saved."))
+                .addOnFailureListener(e -> Log.e("F", "Error training time", e));
     }
 
 
@@ -74,19 +73,19 @@ public class FirestoreHelper {
                 if (trainingTask.isSuccessful()) {
                     DocumentSnapshot trainingSnapshot = trainingTask.getResult();
                     if (trainingSnapshot.exists()) {
-                        int trainingMeters = trainingSnapshot.getLong("total_meters").intValue();
+                        int trainingMeters = trainingSnapshot.getLong("totalMeters").intValue();
                         userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> userTask) {
                                 if (userTask.isSuccessful()) {
                                     DocumentSnapshot userDocumnent = userTask.getResult();
                                     if (userDocumnent.exists()) {
-                                        int userTotalMeters = userDocumnent.getLong("total_meters").intValue();
-                                        int userAvailableMeters = userDocumnent.getLong("available_meters").intValue();
+                                        int userTotalMeters = userDocumnent.getLong("totalMeters").intValue();
+                                        int userAvailableMeters = userDocumnent.getLong("availableMeters").intValue();
                                         int totalMeters = userTotalMeters + trainingMeters;
                                         int availableMeters = userAvailableMeters + trainingMeters;
 
-                                        userRef.update("total_meters", totalMeters, "available_meters", availableMeters)
+                                        userRef.update("totalMeters", totalMeters, "availableMeters", availableMeters)
                                                 .addOnSuccessListener(aVoid -> Log.d("Firestore", "User meters updated successfully!"))
                                                 .addOnFailureListener(e -> Log.e("Firestore", "Error updating user meters", e));
                                     } else {
@@ -112,14 +111,14 @@ public class FirestoreHelper {
         DocumentReference trainingRef = db.collection("trainings").document(trainingId);
         if (timesClimbed > 0) {
             Map<String, Object> routeData = new HashMap<>();
-            routeData.put("times_climbed", timesClimbed);
+            routeData.put("timesClimbed", timesClimbed);
             routeData.put("difficulty", difficulty);
 
-            trainingRef.update("completed_routes." + routeId, routeData)
+            trainingRef.update("completedRoutes." + routeId, routeData)
                     .addOnSuccessListener(success -> Log.d("Firestore", "Updated climb count for route: " + routeId))
                     .addOnFailureListener(e -> Log.e("Firestore", "Error updating climb count", e));
         } else {
-            trainingRef.update("completed_routes." + routeId, FieldValue.delete())
+            trainingRef.update("completedRoutes." + routeId, FieldValue.delete())
                     .addOnSuccessListener(success -> Log.d("Firestore", "Route removed: " + routeId))
                     .addOnFailureListener(e -> Log.e("Firestore", "Error removing route", e));
         }
@@ -128,8 +127,8 @@ public class FirestoreHelper {
     public void updateTrainingMetersRoutes(String trainingId, boolean countUP, int height) {
         DocumentReference training = db.collection("trainings").document(trainingId);
         training.get().addOnSuccessListener(documentSnapshot -> {
-            int meters = documentSnapshot.getLong("total_meters").intValue();
-            int routes = documentSnapshot.getLong("total_routes").intValue();
+            int meters = documentSnapshot.getLong("totalMeters").intValue();
+            int routes = documentSnapshot.getLong("totalRoutes").intValue();
             if (countUP) {
                 meters += height;
                 routes += 1;
@@ -140,8 +139,8 @@ public class FirestoreHelper {
                 }
             }
             Map<String, Object> updates = new HashMap<>();
-            updates.put("total_meters", meters);
-            updates.put("total_routes", routes);
+            updates.put("totalMeters", meters);
+            updates.put("totalRoutes", routes);
             training.update(updates)
                     .addOnSuccessListener(success -> Log.d("Firestore", "Updated total meters and routes"))
                     .addOnFailureListener(e -> Log.e("Firestore", "Error updating training data", e));
@@ -151,8 +150,8 @@ public class FirestoreHelper {
     public void updateTrainingMetersBoulders(String trainingId, boolean countUP, int height) {
         DocumentReference training = db.collection("trainings").document(trainingId);
         training.get().addOnSuccessListener(documentSnapshot -> {
-            int meters = documentSnapshot.getLong("total_meters").intValue();
-            int boulders = documentSnapshot.getLong("total_boulders").intValue();
+            int meters = documentSnapshot.getLong("totalMeters").intValue();
+            int boulders = documentSnapshot.getLong("totalBoulders").intValue();
             if (countUP) {
                 meters += height;
                 boulders += 1;
@@ -163,8 +162,8 @@ public class FirestoreHelper {
                 }
             }
             Map<String, Object> updates = new HashMap<>();
-            updates.put("total_meters", meters);
-            updates.put("total_boulders", boulders);
+            updates.put("totalMeters", meters);
+            updates.put("totalBoulders", boulders);
             training.update(updates)
                     .addOnSuccessListener(success -> Log.d("Firestore", "Updated total meters and boulders"))
                     .addOnFailureListener(e -> Log.e("Firestore", "Error updating training data", e));
@@ -175,14 +174,14 @@ public class FirestoreHelper {
         DocumentReference trainingRef = db.collection("trainings").document(trainingId);
         if (timesClimbed > 0) {
             Map<String, Object> boulderData = new HashMap<>();
-            boulderData.put("times_climbed", timesClimbed);
+            boulderData.put("timesClimbed", timesClimbed);
             boulderData.put("difficulty", difficulty);
 
-            trainingRef.update("completed_boulders." + boulderId, boulderData)
+            trainingRef.update("completedBoulders." + boulderId, boulderData)
                     .addOnSuccessListener(success -> Log.d("Firestore", "Updated climb count for route: " + boulderId))
                     .addOnFailureListener(e -> Log.e("Firestore", "Error updating climb count", e));
         } else {
-            trainingRef.update("completed_boulders." + boulderId, FieldValue.delete())
+            trainingRef.update("completedBoulders." + boulderId, FieldValue.delete())
                     .addOnSuccessListener(success -> Log.d("Firestore", "Route removed: " + boulderId))
                     .addOnFailureListener(e -> Log.e("Firestore", "Error removing route", e));
         }

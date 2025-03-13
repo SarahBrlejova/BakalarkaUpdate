@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class RoutesBouldersTrainingAdapter extends RecyclerView.Adapter<RoutesBouldersTrainingAdapter.RoutesBouldersTrainingViewHolder>{
+public class RoutesBouldersTrainingAdapter extends RecyclerView.Adapter<RoutesBouldersTrainingAdapter.RoutesBouldersTrainingViewHolder> {
 
     Context context;
     List<RouteBoulder> routeBoulderList;
@@ -34,11 +34,6 @@ public class RoutesBouldersTrainingAdapter extends RecyclerView.Adapter<RoutesBo
     @Override
     public void onBindViewHolder(@NonNull RoutesBouldersTrainingAdapter.RoutesBouldersTrainingViewHolder holder, int position) {
         RouteBoulder routeBoulder = routeBoulderList.get(position);
-        if (routeBoulder == null) {
-            Log.e("RoutesBouldersAdapter", "RouteBoulder is null at position: " + position);
-            return;
-        }
-        Log.d("RoutesBouldersAdapter", "Binding route: " + routeBoulder.getName() + ", Active: " + routeBoulder.isIs_active());
 
         holder.tvTrainingRouteBoulderName.setText(routeBoulder.getName());
         holder.tvTrainingRouteBoulderDifficulty.setText(routeBoulder.getDifficulty());
@@ -67,6 +62,31 @@ public class RoutesBouldersTrainingAdapter extends RecyclerView.Adapter<RoutesBo
         return routeBoulderList.size();
     }
 
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
+    public void setOnItemLongClickListener(OnItemLongClickListener listener) {
+        this.longListener = listener;
+    }
+
+    public int changeColor(Context context, String colorName) {
+        int colorId = context.getResources().getIdentifier(colorName, "color", context.getPackageName());
+
+        if (colorId == 0) {
+            return context.getResources().getColor(R.color.black);
+        }
+        return context.getResources().getColor(colorId);
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(RouteBoulder routeBoulder);
+    }
+
+    public interface OnItemLongClickListener {
+        void onItemLongClick(RouteBoulder routeBoulder);
+    }
+
     public static class RoutesBouldersTrainingViewHolder extends RecyclerView.ViewHolder {
         TextView tvTrainingRouteBoulderName, tvTrainingRouteBoulderDifficulty, tvTrainingRouteBoulderID, tvTrainingRouteBoulderTimesClimbed;
 
@@ -77,28 +97,5 @@ public class RoutesBouldersTrainingAdapter extends RecyclerView.Adapter<RoutesBo
             tvTrainingRouteBoulderID = itemView.findViewById(R.id.TVRouteTrainingBoulderID);
             tvTrainingRouteBoulderTimesClimbed = itemView.findViewById(R.id.tvTrainingTimesClimbed);
         }
-    }
-
-    public interface OnItemClickListener {
-        void onItemClick(RouteBoulder routeBoulder);
-    }
-    public interface OnItemLongClickListener {
-        void onItemLongClick(RouteBoulder routeBoulder);
-    }
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.listener = listener;
-    }
-
-    public void setOnItemLongClickListener(OnItemLongClickListener listener) {
-        this.longListener = listener;
-    }
-
-    public int changeColor(Context context, String colorName){
-        int colorId = context.getResources().getIdentifier(colorName, "color", context.getPackageName());
-
-        if (colorId == 0) {
-            return context.getResources().getColor(R.color.black);
-        }
-        return context.getResources().getColor(colorId);
     }
 }

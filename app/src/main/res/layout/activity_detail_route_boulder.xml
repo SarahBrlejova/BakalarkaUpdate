@@ -21,7 +21,6 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
-        <!-- NAME row -->
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -41,7 +40,6 @@
                 android:text="" />
         </LinearLayout>
 
-        <!-- COLOUR row -->
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -62,7 +60,6 @@
                 android:text="--" />
         </LinearLayout>
 
-        <!-- DIFFICULTY row -->
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -83,7 +80,6 @@
                 android:text="--" />
         </LinearLayout>
 
-        <!-- HEIGHT row -->
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -104,7 +100,6 @@
                 android:text="--" />
         </LinearLayout>
 
-        <!-- SEKTOR row -->
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -125,7 +120,6 @@
                 android:text="--" />
         </LinearLayout>
 
-        <!-- SETTER row -->
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -146,7 +140,6 @@
                 android:text="--" />
         </LinearLayout>
 
-        <!-- NOTES row -->
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -167,7 +160,6 @@
                 android:text="--" />
         </LinearLayout>
 
-        <!-- CREATED_AT row -->
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -188,7 +180,6 @@
                 android:text="--" />
         </LinearLayout>
 
-        <!-- IS_ACTIVE row -->
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -209,7 +200,6 @@
                 android:text="--" />
         </LinearLayout>
 
-        <!-- ID row -->
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"

@@ -5,10 +5,10 @@ import com.google.firebase.Timestamp;
 public class RouteBoulder {
     private String id;
     private String colour;
-    private Timestamp created_at;
+    private Timestamp createdAt;
     private String difficulty;
     private int height;
-    private boolean is_active;
+    private boolean isActive;
     private String name;
     private String notes;
     private String sektor;
@@ -18,13 +18,13 @@ public class RouteBoulder {
     public RouteBoulder() {
     }
 
-    public RouteBoulder(String id, String colour, Timestamp created_at, String difficulty, int height, boolean is_active, String name, String notes, String sektor, String setter) {
+    public RouteBoulder(String id, String colour, Timestamp createdAt, String difficulty, int height, boolean isActive, String name, String notes, String sektor, String setter) {
         this.id = id;
         this.colour = colour;
-        this.created_at = created_at;
+        this.createdAt = createdAt;
         this.difficulty = difficulty;
         this.height = height;
-        this.is_active = is_active;
+        this.isActive = isActive;
         this.name = name;
         this.notes = notes;
         this.sektor = sektor;
@@ -47,12 +47,12 @@ public class RouteBoulder {
         this.colour = colour;
     }
 
-    public Timestamp getCreated_at() {
-        return created_at;
+    public Timestamp getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(Timestamp created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
     public String getDifficulty() {
@@ -71,12 +71,12 @@ public class RouteBoulder {
         this.height = height;
     }
 
-    public boolean isIs_active() {
-        return is_active;
+    public boolean isActive() {
+        return isActive;
     }
 
-    public void setIs_active(boolean is_active) {
-        this.is_active = is_active;
+    public void setActive(boolean active) {
+        this.isActive = active;
     }
 
     public String getName() {

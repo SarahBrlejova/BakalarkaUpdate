@@ -9,18 +9,18 @@ public class Center {
     private String country;
     private String city;
     private String address;
-    private Timestamp created_at;
+    private Timestamp createdAt;
 
     public Center() {
     }
 
-    public Center(String id, String name, String country, String city, String address, Timestamp created_at) {
+    public Center(String id, String name, String country, String city, String address, Timestamp createdAt) {
         this.id = id;
         this.name = name;
         this.country = country;
         this.city = city;
         this.address = address;
-        this.created_at = created_at;
+        this.createdAt = createdAt;
     }
 
     public void setId(String id) {
@@ -63,11 +63,11 @@ public class Center {
         this.address = address;
     }
 
-    public Timestamp getCreated_at() {
-        return created_at;
+    public Timestamp getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(Timestamp created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 }

@@ -82,9 +82,9 @@ public class RegisterActivity extends AppCompatActivity {
         user.put("email", email);
         user.put("nick", nickNameStr);
         user.put("age", age);
-        user.put("total_meters", 0);
-        user.put("available_meters", 0);
-        user.put("average_difficulty", "N/A");
+        user.put("totalMeters", 0);
+        user.put("availableMeters", 0);
+        user.put("averageDifficulty", "N/A");
 
         db.collection("users").document(userId).set(user)
                 .addOnSuccessListener(aVoid -> {

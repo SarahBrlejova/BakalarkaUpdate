@@ -99,7 +99,7 @@ public class TrainingBouldersFragment extends Fragment {
         firestoreListener = db.collection("centers")
                 .document(centerId)
                 .collection("boulders")
-                .whereEqualTo("is_active", true)
+                .whereEqualTo("isActive", true)
                 .addSnapshotListener((querySnapshot, error) -> {
                     if (error != null) {
                         // handle error

@@ -74,7 +74,7 @@ public class RoutesFragment extends Fragment {
         firestoreListener = db.collection("centers")
                 .document(centerId)
                 .collection("routes")
-                .whereEqualTo("is_active", true)
+                .whereEqualTo("isActive", true)
                 .addSnapshotListener((querySnapshot, error) -> {
                     if (error != null) {
                         // handle error

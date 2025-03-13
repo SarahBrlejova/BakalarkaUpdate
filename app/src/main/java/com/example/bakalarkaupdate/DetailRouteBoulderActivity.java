@@ -76,7 +76,7 @@ public class DetailRouteBoulderActivity extends AppCompatActivity {
                                 tvSektor.setText(routeBoulder.getSektor());
                                 tvSetter.setText(routeBoulder.getSetter());
                                 tvNotes.setText(routeBoulder.getNotes());
-                                tvCreatedAt.setText(routeBoulder.getCreated_at().toDate().toString());
+                                tvCreatedAt.setText(routeBoulder.getCreatedAt().toDate().toString());
                                 tvId.setText(routeBoulder.getId());
                             }
                         } else {
@@ -105,7 +105,7 @@ public class DetailRouteBoulderActivity extends AppCompatActivity {
                                 tvSektor.setText(routeBoulder.getSektor());
                                 tvSetter.setText(routeBoulder.getSetter());
                                 tvNotes.setText(routeBoulder.getNotes());
-                                tvCreatedAt.setText(routeBoulder.getCreated_at().toDate().toString());
+                                tvCreatedAt.setText(routeBoulder.getCreatedAt().toDate().toString());
                                 tvId.setText(routeBoulder.getId());
                             }
                         } else {
