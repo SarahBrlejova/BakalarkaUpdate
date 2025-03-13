@@ -128,7 +128,4 @@ public class TrainingFragment extends Fragment {
         this.trainingId = trainingId;
     }
 
-    public String getTrainingId() {
-        return trainingId;
-    }
 }

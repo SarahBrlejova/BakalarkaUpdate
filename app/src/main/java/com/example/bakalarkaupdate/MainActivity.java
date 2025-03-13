@@ -31,9 +31,6 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-//        FirestoreHelper firestoreHelper = new FirestoreHelper();
-//firestoreHelper.addTestTrainings();
-
         buttonRegister = findViewById(R.id.BMainRegister);
         buttonResetPassword = findViewById(R.id.BMainReset);
         Button buttonlogin = findViewById(R.id.BMainLogin);

@@ -3,45 +3,43 @@ package com.example.bakalarkaupdate;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ProfilFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
 public class ProfilFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private RecyclerView recyclerView;
+    private UsersAdapter adapter;
+    private FirestoreHelper firestoreHelper;
+    private User user;
+    private FirebaseFirestore db;
+    private ListenerRegistration firestoreListener;
+    private Button btnTrainings, btnCollections;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public ProfilFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfilFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ProfilFragment newInstance(String param1, String param2) {
+
+    public static ProfilFragment newInstance() {
         ProfilFragment fragment = new ProfilFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -49,16 +47,69 @@ public class ProfilFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        db = FirebaseFirestore.getInstance();
+        firestoreHelper = new FirestoreHelper();
+        user = new User();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profil, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_profil, container, false);
+
+        btnTrainings = view.findViewById(R.id.btnProfilTrainigsFragment);
+        btnCollections = view.findViewById(R.id.btnProfilCollectionsFragment);
+
+        recyclerView = view.findViewById(R.id.recyclerViewUserProfilFragment);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapter = new UsersAdapter(getContext(), user);
+        recyclerView.setAdapter(adapter);
+
+        loadFragment(ProfilTrainigFragment.newInstance());
+        btnTrainings.setOnClickListener(v -> loadFragment(ProfilTrainigFragment.newInstance()));
+        btnCollections.setOnClickListener(v -> loadFragment(ProfilCollectionsFragment.newInstance()));
+
+
+        loadData();
+
+        return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (firestoreListener != null) {
+            firestoreListener.remove();
+        }
+    }
+
+    private void loadData() {
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        firestoreListener = db.collection("users").document(currentUserId).addSnapshotListener((documentSnapshot, error) -> {
+            if (error != null) {
+                Log.e("ProfilFragment", "Error loading user data", error);
+                return;
+            }
+            if (documentSnapshot != null && documentSnapshot.exists()) {
+                // Convert Firestore document to User object
+                User user = documentSnapshot.toObject(User.class);
+                if (user != null) {
+                    this.user = user;
+                    adapter.setUser(user);
+                    adapter.notifyDataSetChanged();
+                } else {
+                    Log.d("ProfilFragment", "User object is null");
+                }
+            } else {
+                Log.d("ProfilFragment", "User data not found!");
+            }
+        });
+    }
+
+    private void loadFragment(Fragment fragment) {
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_containerTrainingsOrCollections, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }
