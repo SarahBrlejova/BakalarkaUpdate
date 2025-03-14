@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -28,10 +29,6 @@ public class FirestoreHelper {
         centers = db.collection("centers");
     }
 
-    public void getAllCenters() {
-
-    }
-
     public void startTraining(String centerId, GetNewCreatedID getNewCreatedID) {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Map<String, Object> training = new HashMap<>();
@@ -45,12 +42,49 @@ public class FirestoreHelper {
         training.put("completedRoutes", new HashMap<>());
         training.put("completedBoulders", new HashMap<>());
 
-        db.collection("trainings").add(training)
-                .addOnSuccessListener(documentReference -> {
-                    String trainingId = documentReference.getId();
-                    getNewCreatedID.onSuccess(trainingId);
-                })
-                .addOnFailureListener(e -> Log.e("Firestore", "Error starting training", e));
+        db.collection("trainings").add(training).addOnSuccessListener(documentReference -> {
+            String trainingId = documentReference.getId();
+            getNewCreatedID.onSuccess(trainingId);
+        }).addOnFailureListener(fail -> Log.e("F", "Error starting training"));
+    }
+
+    public void unlockBadge(String badgeId, String collectionId) {
+        if (badgeId == null || collectionId == null) {
+            return;
+        }
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DocumentReference user = db.collection("users").document(userId);
+        DocumentReference badgeRef = db.collection("collections").document(collectionId).collection("badges").document(badgeId);
+
+        badgeRef.get().addOnCompleteListener(badgeTask -> {
+            if (badgeTask.isSuccessful()) {
+                DocumentSnapshot badgeSnapshot = badgeTask.getResult();
+                if (badgeSnapshot.exists()) {
+                    int height = badgeSnapshot.getLong("height").intValue();
+                    user.get().addOnCompleteListener(userTask -> {
+                        if (userTask.isSuccessful()) {
+                            DocumentSnapshot userSnapshot = userTask.getResult();
+                            if (userSnapshot.exists()) {
+                                int availableMeters = userSnapshot.getLong("availableMeters").intValue();
+                                if (availableMeters >= height) {
+                                    int meterAfterHike = availableMeters - height;
+                                    user.update("availableMeters", meterAfterHike).addOnSuccessListener(aVoid -> {
+                                        Map<String, Object> badgeData = new HashMap<>();
+                                        badgeData.put("userId", userId);
+                                        badgeData.put("badgeId", badgeId);
+                                        badgeData.put("collectionId", collectionId);
+                                        badgeData.put("earnedAt", Timestamp.now());
+                                        db.collection("usersBadges").add(badgeData)
+                                                .addOnSuccessListener(success -> Log.d("F", "Badge added"))
+                                                .addOnFailureListener(fail -> Log.e("F", "Error with badge"));
+                                    }).addOnFailureListener(fail -> Log.e("F", "Error with user meters"));
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+        });
     }
 
 
@@ -58,19 +92,17 @@ public class FirestoreHelper {
         DocumentReference trainingRef = db.collection("trainings").document(trainingId);
 
         trainingRef.update("endTraining", FieldValue.serverTimestamp())
-                .addOnSuccessListener(aVoid -> Log.d("F", "Training time saved."))
-                .addOnFailureListener(e -> Log.e("F", "Error training time", e));
+                .addOnSuccessListener(success -> Log.d("F", "Training time saved"))
+                .addOnFailureListener(fail -> Log.e("F", "Error with training time"));
     }
 
     public void getCenterName(String centerId, TextView textView) {
-        db.collection("centers").document(centerId).get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists() && documentSnapshot.contains("name")) {
-                        String centerName = documentSnapshot.getString("name");
-                        textView.setText(centerName);
-                    }
-                })
-                .addOnFailureListener(e -> textView.setText("Error loading center"));
+        db.collection("centers").document(centerId).get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists() && documentSnapshot.contains("name")) {
+                String centerName = documentSnapshot.getString("name");
+                textView.setText(centerName);
+            }
+        }).addOnFailureListener(fail -> Log.e("F", "Error with center name"));
     }
 
     public void updateUserClimbedMeters(String trainingId) {
@@ -97,21 +129,17 @@ public class FirestoreHelper {
                                         int availableMeters = userAvailableMeters + trainingMeters;
 
                                         userRef.update("totalMeters", totalMeters, "availableMeters", availableMeters)
-                                                .addOnSuccessListener(aVoid -> Log.d("Firestore", "User meters updated successfully!"))
-                                                .addOnFailureListener(e -> Log.e("Firestore", "Error updating user meters", e));
-                                    } else {
-                                        Log.d("Firestore", "No such user document");
+                                                .addOnSuccessListener(success -> Log.d("F", "User meters updated"))
+                                                .addOnFailureListener(fail -> Log.e("F", "Error with user meters"));
                                     }
-                                } else {
-                                    Log.e("Firestore", "User document fetch failed", userTask.getException());
                                 }
                             }
                         });
                     } else {
-                        Log.d("Firestore", "No such training document");
+                        Log.d("F", "No training document");
                     }
                 } else {
-                    Log.e("Firestore", "Training document fetch failed", trainingTask.getException());
+                    Log.e("F", "Error with training document", trainingTask.getException());
                 }
             }
         });
@@ -126,12 +154,12 @@ public class FirestoreHelper {
             routeData.put("difficulty", difficulty);
 
             trainingRef.update("completedRoutes." + routeId, routeData)
-                    .addOnSuccessListener(success -> Log.d("Firestore", "Updated climb count for route: " + routeId))
-                    .addOnFailureListener(e -> Log.e("Firestore", "Error updating climb count", e));
+                    .addOnSuccessListener(success -> Log.d("F", "Updated climb count"))
+                    .addOnFailureListener(fail -> Log.e("F", "Error with climb count"));
         } else {
             trainingRef.update("completedRoutes." + routeId, FieldValue.delete())
-                    .addOnSuccessListener(success -> Log.d("Firestore", "Route removed: " + routeId))
-                    .addOnFailureListener(e -> Log.e("Firestore", "Error removing route", e));
+                    .addOnSuccessListener(success -> Log.d("F", "Route removed"))
+                    .addOnFailureListener(fail -> Log.e("F", "Error with removing route"));
         }
     }
 
@@ -153,9 +181,9 @@ public class FirestoreHelper {
             updates.put("totalMeters", meters);
             updates.put("totalRoutes", routes);
             training.update(updates)
-                    .addOnSuccessListener(success -> Log.d("Firestore", "Updated total meters and routes"))
-                    .addOnFailureListener(e -> Log.e("Firestore", "Error updating training data", e));
-        }).addOnFailureListener(e -> Log.e("Firestore", "Error fetching training data", e));
+                    .addOnSuccessListener(success -> Log.d("F", "Updated training routes data"))
+                    .addOnFailureListener(fail -> Log.e("F", "Error training routes data"));
+        }).addOnFailureListener(fail -> Log.e("F", "Error with training data"));
     }
 
     public void updateTrainingMetersBoulders(String trainingId, boolean countUP, int height) {
@@ -175,10 +203,9 @@ public class FirestoreHelper {
             Map<String, Object> updates = new HashMap<>();
             updates.put("totalMeters", meters);
             updates.put("totalBoulders", boulders);
-            training.update(updates)
-                    .addOnSuccessListener(success -> Log.d("Firestore", "Updated total meters and boulders"))
-                    .addOnFailureListener(e -> Log.e("Firestore", "Error updating training data", e));
-        }).addOnFailureListener(e -> Log.e("Firestore", "Error fetching training data", e));
+            training.update(updates).addOnSuccessListener(success -> Log.d("F", "Updated training boulders data"))
+                    .addOnFailureListener(fail -> Log.e("F", "Error training boulders data"));
+        }).addOnFailureListener(fail -> Log.e("F", "Error with training data"));
     }
 
     public void updateTrainingBoulders(String trainingId, String boulderId, int timesClimbed, String difficulty) {
@@ -189,12 +216,12 @@ public class FirestoreHelper {
             boulderData.put("difficulty", difficulty);
 
             trainingRef.update("completedBoulders." + boulderId, boulderData)
-                    .addOnSuccessListener(success -> Log.d("Firestore", "Updated climb count for route: " + boulderId))
-                    .addOnFailureListener(e -> Log.e("Firestore", "Error updating climb count", e));
+                    .addOnSuccessListener(success -> Log.d("F", "Updated boulder climb count"))
+                    .addOnFailureListener(fail -> Log.e("F", "Error updating climb count"));
         } else {
             trainingRef.update("completedBoulders." + boulderId, FieldValue.delete())
-                    .addOnSuccessListener(success -> Log.d("Firestore", "Route removed: " + boulderId))
-                    .addOnFailureListener(e -> Log.e("Firestore", "Error removing route", e));
+                    .addOnSuccessListener(success -> Log.d("F", "Boulder removed"))
+                    .addOnFailureListener(fail -> Log.e("F", "Error removing boulder"));
         }
     }
 

@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,7 +64,7 @@ public class CollectionBadgesFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerViewCollectionBadges);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         loadUserMetersData();
-        adapter = new BadgeAdapter(getContext(), badgeList, 0);
+        adapter = new BadgeAdapter(getContext(), badgeList, 0,collectionId);
         recyclerView.setAdapter(adapter);
 
         loadBadgeData();
@@ -80,6 +81,7 @@ public class CollectionBadgesFragment extends Fragment {
                     badgeList.clear();
                     for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                         Badge badge = doc.toObject(Badge.class);
+                        badge.setId(doc.getId());
                         badgeList.add(badge);
                     }
                     adapter.notifyDataSetChanged();

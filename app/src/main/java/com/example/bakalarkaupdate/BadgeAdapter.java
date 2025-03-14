@@ -1,6 +1,7 @@
 package com.example.bakalarkaupdate;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,14 +18,18 @@ public class BadgeAdapter extends RecyclerView.Adapter<BadgeAdapter.BadgeViewHol
 
     private final Context context;
     private final List<Badge> badgeList;
-    private OnItemClickListener listener;
 
+    private FirestoreHelper firestoreHelper;
+
+    private String collectionId;
     private int userMeters;
 
-    public BadgeAdapter(Context context, List<Badge> badgeList, int userMeters) {
+    public BadgeAdapter(Context context, List<Badge> badgeList, int userMeters, String collectionId) {
         this.context = context;
         this.badgeList = badgeList;
         this.userMeters = userMeters;
+        this.collectionId = collectionId;
+        firestoreHelper = new FirestoreHelper();
     }
 
     @NonNull
@@ -37,6 +42,7 @@ public class BadgeAdapter extends RecyclerView.Adapter<BadgeAdapter.BadgeViewHol
     @Override
     public void onBindViewHolder(@NonNull BadgeViewHolder holder, int position) {
         Badge badge = badgeList.get(position);
+
         holder.tvBadgeName.setText(badge.getName());
         holder.tvBadgeHeight.setText("Height: " + badge.getHeight() + "m");
 
@@ -45,6 +51,10 @@ public class BadgeAdapter extends RecyclerView.Adapter<BadgeAdapter.BadgeViewHol
         } else {
             holder.btnBadgeItemUnlock.setVisibility(View.GONE);
         }
+
+        holder.btnBadgeItemUnlock.setOnClickListener(v -> {
+            firestoreHelper.unlockBadge(badge.getId(), collectionId);
+        });
 
     }
 
@@ -57,13 +67,7 @@ public class BadgeAdapter extends RecyclerView.Adapter<BadgeAdapter.BadgeViewHol
         return badgeList.size();
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.listener = listener;
-    }
 
-    public interface OnItemClickListener {
-        void onItemClick(Badge badge);
-    }
 
     public static class BadgeViewHolder extends RecyclerView.ViewHolder {
         TextView tvBadgeName, tvBadgeHeight;

@@ -19,4 +19,9 @@ public class Badge {
     public String getName() { return name; }
     public int getHeight() { return height; }
     public String getImageUrl() { return imageUrl; }
+
+    public void setId(String id) { this.id = id; }
+    public void setName(String name) { this.name = name; }
+    public void setHeight(int height) { this.height = height; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 }
