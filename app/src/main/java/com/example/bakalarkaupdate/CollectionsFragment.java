@@ -91,8 +91,6 @@ public class CollectionsFragment extends Fragment {
                     }
                     adapter.notifyDataSetChanged();
                 });
-
-        // 🔹 Fetch the latest data once at the start
         db.collection("collections")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {

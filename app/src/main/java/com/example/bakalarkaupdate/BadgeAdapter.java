@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,15 +13,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class BadgeAdapter extends RecyclerView.Adapter<BadgeAdapter.BadgeViewHolder>{
+public class BadgeAdapter extends RecyclerView.Adapter<BadgeAdapter.BadgeViewHolder> {
 
     private final Context context;
     private final List<Badge> badgeList;
     private OnItemClickListener listener;
 
-    public BadgeAdapter(Context context, List<Badge> badgeList) {
+    private int userMeters;
+
+    public BadgeAdapter(Context context, List<Badge> badgeList, int userMeters) {
         this.context = context;
         this.badgeList = badgeList;
+        this.userMeters = userMeters;
     }
 
     @NonNull
@@ -36,6 +40,16 @@ public class BadgeAdapter extends RecyclerView.Adapter<BadgeAdapter.BadgeViewHol
         holder.tvBadgeName.setText(badge.getName());
         holder.tvBadgeHeight.setText("Height: " + badge.getHeight() + "m");
 
+        if (userMeters >= badge.getHeight()) {
+            holder.btnBadgeItemUnlock.setVisibility(View.VISIBLE);
+        } else {
+            holder.btnBadgeItemUnlock.setVisibility(View.GONE);
+        }
+
+    }
+
+    public void setUserMeters(int userMeters) {
+        this.userMeters = userMeters;
     }
 
     @Override
@@ -43,24 +57,26 @@ public class BadgeAdapter extends RecyclerView.Adapter<BadgeAdapter.BadgeViewHol
         return badgeList.size();
     }
 
-    public static class BadgeViewHolder extends RecyclerView.ViewHolder {
-        TextView tvBadgeName, tvBadgeHeight;
-        ImageView ivBadgeImage;
-
-        public BadgeViewHolder(@NonNull View itemView) {
-            super(itemView);
-            tvBadgeName = itemView.findViewById(R.id.tvBadgeItemName);
-            tvBadgeHeight = itemView.findViewById(R.id.tvBadgeItemHeight);
-            ivBadgeImage = itemView.findViewById(R.id.ivBadgeItemImage);
-        }
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
     }
 
     public interface OnItemClickListener {
         void onItemClick(Badge badge);
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.listener = listener;
+    public static class BadgeViewHolder extends RecyclerView.ViewHolder {
+        TextView tvBadgeName, tvBadgeHeight;
+        ImageView ivBadgeImage;
+        Button btnBadgeItemUnlock;
+
+        public BadgeViewHolder(@NonNull View itemView) {
+            super(itemView);
+            tvBadgeName = itemView.findViewById(R.id.tvBadgeItemName);
+            tvBadgeHeight = itemView.findViewById(R.id.tvBadgeItemHeight);
+            ivBadgeImage = itemView.findViewById(R.id.ivBadgeItemImage);
+            btnBadgeItemUnlock = itemView.findViewById(R.id.btnBadgeItemUnlock);
+        }
     }
 
 

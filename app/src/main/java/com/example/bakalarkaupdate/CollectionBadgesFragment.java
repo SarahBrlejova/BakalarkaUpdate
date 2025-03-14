@@ -10,10 +10,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -24,6 +24,7 @@ import java.util.List;
 public class CollectionBadgesFragment extends Fragment {
 
 
+    int availableMeters = 0;
     private RecyclerView recyclerView;
     private BadgeAdapter adapter;
     private List<Badge> badgeList;
@@ -61,18 +62,19 @@ public class CollectionBadgesFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.recyclerViewCollectionBadges);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        adapter = new BadgeAdapter(getContext(), badgeList);
+        loadUserMetersData();
+        adapter = new BadgeAdapter(getContext(), badgeList, 0);
         recyclerView.setAdapter(adapter);
 
-        loadData();
+        loadBadgeData();
 
         Button btnBack = view.findViewById(R.id.btnCollectionBadgesFragmentBack);
         btnBack.setOnClickListener(v -> closeFragment());
 
-        return view;    }
+        return view;
+    }
 
-    private void loadData() {
+    private void loadBadgeData() {
         db.collection("collections").document(collectionId).collection("badges")
                 .get().addOnSuccessListener(queryDocumentSnapshots -> {
                     badgeList.clear();
@@ -83,6 +85,24 @@ public class CollectionBadgesFragment extends Fragment {
                     adapter.notifyDataSetChanged();
                 })
                 .addOnFailureListener(e -> Toast.makeText(getContext(), "Error loading badges", Toast.LENGTH_SHORT).show());
+    }
+
+    private void loadUserMetersData() {
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        db.collection("users").document(userId)
+                .addSnapshotListener((documentSnapshot, error) -> {
+                    if (error != null) {
+                        return;
+                    }
+                    if (documentSnapshot != null && documentSnapshot.exists()) {
+                        Long meters = documentSnapshot.getLong("availableMeters");
+                        if (meters != null) {
+                            availableMeters = meters.intValue();
+                            adapter.setUserMeters(availableMeters);
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
+                });
     }
 
     private void closeFragment() {
