@@ -10,8 +10,8 @@ public class Training {
     private String centerId;
     private Map<String, Object> completedBoulders;
     private Map<String, Object> completedRoutes;
-    private Timestamp startTimestamp;
-    private Timestamp endTimestamp;
+    private Timestamp startTraining;
+    private Timestamp endTraining;
     private int totalBoulders;
     private int totalMeters;
     private int totalRoutes;
@@ -20,13 +20,13 @@ public class Training {
     public Training() {
     }
 
-    public Training(String id, String centerId, Map<String, Object> completedBoulders, Map<String, Object> completedRoutes, Timestamp startTimestamp, Timestamp endTimestamp, int totalBoulders, int totalMeters, int totalRoutes, String userId) {
+    public Training(String id, String centerId, Map<String, Object> completedBoulders, Map<String, Object> completedRoutes, Timestamp startTraining, Timestamp endTraining, int totalBoulders, int totalMeters, int totalRoutes, String userId) {
         this.id = id;
         this.centerId = centerId;
         this.completedBoulders = completedBoulders;
         this.completedRoutes = completedRoutes;
-        this.startTimestamp = startTimestamp;
-        this.endTimestamp = endTimestamp;
+        this.startTraining = startTraining;
+        this.endTraining = endTraining;
         this.totalBoulders = totalBoulders;
         this.totalMeters = totalMeters;
         this.totalRoutes = totalRoutes;
@@ -60,20 +60,20 @@ public class Training {
         this.completedRoutes = completedRoutes;
     }
 
-    public Timestamp getStartTimestamp() {
-        return startTimestamp;
+    public Timestamp getStartTraining() {
+        return startTraining;
     }
 
-    public void setStartTimestamp(Timestamp startTimestamp) {
-        this.startTimestamp = startTimestamp;
+    public void setStartTraining(Timestamp startTraining) {
+        this.startTraining = startTraining;
     }
 
-    public Timestamp getEndTimestamp() {
-        return endTimestamp;
+    public Timestamp getEndTraining() {
+        return endTraining;
     }
 
-    public void setEndTimestamp(Timestamp endTimestamp) {
-        this.endTimestamp = endTimestamp;
+    public void setEndTraining(Timestamp endTraining) {
+        this.endTraining = endTraining;
     }
 
     public int getTotalBoulders() {

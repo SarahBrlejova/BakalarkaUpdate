@@ -1,6 +1,7 @@
 package com.example.bakalarkaupdate;
 
 import android.util.Log;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
@@ -61,6 +62,16 @@ public class FirestoreHelper {
                 .addOnFailureListener(e -> Log.e("F", "Error training time", e));
     }
 
+    public void getCenterName(String centerId, TextView textView) {
+        db.collection("centers").document(centerId).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists() && documentSnapshot.contains("name")) {
+                        String centerName = documentSnapshot.getString("name");
+                        textView.setText(centerName);
+                    }
+                })
+                .addOnFailureListener(e -> textView.setText("Error loading center"));
+    }
 
     public void updateUserClimbedMeters(String trainingId) {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
