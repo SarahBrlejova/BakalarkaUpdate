@@ -53,7 +53,7 @@ public class BadgeAdapter extends RecyclerView.Adapter<BadgeAdapter.BadgeViewHol
         }
 
         holder.btnBadgeItemUnlock.setOnClickListener(v -> {
-            firestoreHelper.unlockBadge(badge.getId(), collectionId);
+            firestoreHelper.unlockBadge(badge.getId(), collectionId, badge.getImageUrl());
         });
 
     }

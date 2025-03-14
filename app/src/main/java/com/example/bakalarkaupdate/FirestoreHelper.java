@@ -48,7 +48,7 @@ public class FirestoreHelper {
         }).addOnFailureListener(fail -> Log.e("F", "Error starting training"));
     }
 
-    public void unlockBadge(String badgeId, String collectionId) {
+    public void unlockBadge(String badgeId, String collectionId, String imgUrl) {
         if (badgeId == null || collectionId == null) {
             return;
         }
@@ -74,6 +74,7 @@ public class FirestoreHelper {
                                         badgeData.put("badgeId", badgeId);
                                         badgeData.put("collectionId", collectionId);
                                         badgeData.put("earnedAt", Timestamp.now());
+                                        badgeData.put("imageUrl", imgUrl);
                                         db.collection("usersBadges").add(badgeData)
                                                 .addOnSuccessListener(success -> Log.d("F", "Badge added"))
                                                 .addOnFailureListener(fail -> Log.e("F", "Error with badge"));
