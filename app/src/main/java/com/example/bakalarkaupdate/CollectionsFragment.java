@@ -75,7 +75,7 @@ public class CollectionsFragment extends Fragment {
     }
 
     private void loadData() {
-        db.collection("collections")
+        firestoreListener = db.collection("collections")
                 .addSnapshotListener((value, error) -> {
                     if (error != null) {
                         Toast.makeText(getContext(), "Error fetching data", Toast.LENGTH_LONG).show();
@@ -91,19 +91,7 @@ public class CollectionsFragment extends Fragment {
                     }
                     adapter.notifyDataSetChanged();
                 });
-        db.collection("collections")
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    collectionList.clear();
-                    for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                        Collection collection = doc.toObject(Collection.class);
-                        collection.setId(doc.getId());
-                        collectionList.add(collection);
-                    }
-                    adapter.notifyDataSetChanged();
-                });
     }
-
 
 
     @Override

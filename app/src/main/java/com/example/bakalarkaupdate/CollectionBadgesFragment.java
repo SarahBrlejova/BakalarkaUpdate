@@ -84,10 +84,34 @@ public class CollectionBadgesFragment extends Fragment {
                         badge.setId(doc.getId());
                         badgeList.add(badge);
                     }
-                    adapter.notifyDataSetChanged();
+                    checkUserBadges();
                 })
                 .addOnFailureListener(e -> Toast.makeText(getContext(), "Error loading badges", Toast.LENGTH_SHORT).show());
     }
+
+    private void checkUserBadges() {
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        db.collection("usersBadges")
+                .whereEqualTo("userId", userId)
+                .whereEqualTo("collectionId", collectionId)
+                .get()
+                .addOnSuccessListener(userBadgesObjects -> {
+                    for (QueryDocumentSnapshot userBadgeObject : userBadgesObjects) {
+                        String unlockedBadgeId = userBadgeObject.getString("badgeId");
+
+                        for (Badge badge : badgeList) {
+                            if (badge.getId().equals(unlockedBadgeId)) {
+                                badge.setUnlocked(true);
+                            }
+                        }
+                    }
+                    adapter.notifyDataSetChanged();
+                })
+                .addOnFailureListener(e ->
+                        Log.e("F", "Error loading unlocked badges", e));
+    }
+
 
     private void loadUserMetersData() {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();

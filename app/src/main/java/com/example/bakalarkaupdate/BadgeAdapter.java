@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -46,14 +47,23 @@ public class BadgeAdapter extends RecyclerView.Adapter<BadgeAdapter.BadgeViewHol
         holder.tvBadgeName.setText(badge.getName());
         holder.tvBadgeHeight.setText("Height: " + badge.getHeight() + "m");
 
-        if (userMeters >= badge.getHeight()) {
-            holder.btnBadgeItemUnlock.setVisibility(View.VISIBLE);
-        } else {
+        if (badge.isUnlocked()) {
             holder.btnBadgeItemUnlock.setVisibility(View.GONE);
+            holder.itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.green));
+
+        } else {
+            holder.itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
+            if (userMeters >= badge.getHeight()) {
+                holder.btnBadgeItemUnlock.setVisibility(View.VISIBLE);
+            } else {
+                holder.btnBadgeItemUnlock.setVisibility(View.GONE);
+            }
         }
 
         holder.btnBadgeItemUnlock.setOnClickListener(v -> {
             firestoreHelper.unlockBadge(badge.getId(), collectionId, badge.getImageUrl());
+            badge.setUnlocked(true);
+            notifyItemChanged(position);
         });
 
     }
