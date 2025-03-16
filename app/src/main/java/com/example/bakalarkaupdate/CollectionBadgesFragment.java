@@ -64,7 +64,7 @@ public class CollectionBadgesFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerViewCollectionBadges);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         loadUserMetersData();
-        adapter = new BadgeAdapter(getContext(), badgeList, 0,collectionId);
+        adapter = new BadgeAdapter(getContext(), badgeList, 0, collectionId);
         recyclerView.setAdapter(adapter);
 
         loadBadgeData();
@@ -77,17 +77,22 @@ public class CollectionBadgesFragment extends Fragment {
 
     private void loadBadgeData() {
         db.collection("collections").document(collectionId).collection("badges")
-                .get().addOnSuccessListener(queryDocumentSnapshots -> {
+                .addSnapshotListener((document, error) -> {
+                    if (error != null) {
+                        return;
+                    }
                     badgeList.clear();
-                    for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                        Badge badge = doc.toObject(Badge.class);
-                        badge.setId(doc.getId());
-                        badgeList.add(badge);
+                    if (document != null) {
+                        for (QueryDocumentSnapshot doc : document) {
+                            Badge badge = doc.toObject(Badge.class);
+                            badge.setId(doc.getId());
+                            badgeList.add(badge);
+                        }
                     }
                     checkUserBadges();
-                })
-                .addOnFailureListener(e -> Toast.makeText(getContext(), "Error loading badges", Toast.LENGTH_SHORT).show());
+                });
     }
+
 
     private void checkUserBadges() {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -95,22 +100,24 @@ public class CollectionBadgesFragment extends Fragment {
         db.collection("usersBadges")
                 .whereEqualTo("userId", userId)
                 .whereEqualTo("collectionId", collectionId)
-                .get()
-                .addOnSuccessListener(userBadgesObjects -> {
-                    for (QueryDocumentSnapshot userBadgeObject : userBadgesObjects) {
-                        String unlockedBadgeId = userBadgeObject.getString("badgeId");
-
-                        for (Badge badge : badgeList) {
-                            if (badge.getId().equals(unlockedBadgeId)) {
-                                badge.setUnlocked(true);
+                .addSnapshotListener((userBadgesObjects, error) -> {
+                    if (error != null) {
+                        return;
+                    }
+                    if (userBadgesObjects != null) {
+                        for (QueryDocumentSnapshot userBadgeObject : userBadgesObjects) {
+                            String unlockedBadgeId = userBadgeObject.getString("badgeId");
+                            for (Badge badge : badgeList) {
+                                if (badge.getId().equals(unlockedBadgeId)) {
+                                    badge.setUnlocked(true);
+                                }
                             }
                         }
                     }
                     adapter.notifyDataSetChanged();
-                })
-                .addOnFailureListener(e ->
-                        Log.e("F", "Error loading unlocked badges", e));
+                });
     }
+
 
 
     private void loadUserMetersData() {
