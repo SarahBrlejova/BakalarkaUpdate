@@ -2,6 +2,7 @@ package com.example.bakalarkaupdate;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -12,6 +13,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
@@ -33,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
         buttonRegister = findViewById(R.id.BMainRegister);
         buttonResetPassword = findViewById(R.id.BMainReset);
-        Button buttonlogin = findViewById(R.id.BMainLogin);
+        Button buttonLogin = findViewById(R.id.BMainLogin);
 
         buttonRegister.setOnClickListener(v ->
                 startActivity(new Intent(MainActivity.this, RegisterActivity.class))
@@ -43,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, ResetPasswordActivity.class))
         );
 
-        buttonlogin.setOnClickListener(evt-> login());
+        buttonLogin.setOnClickListener(evt-> login());
     }
 
     private void login(){
@@ -58,10 +60,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         auth = FirebaseAuth.getInstance();
-
         auth.signInWithEmailAndPassword(userMail, password)
                 .addOnSuccessListener(authResult -> {
-                    Toast.makeText(MainActivity.this, "Login successful!!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "Prihlásenie úspešné.", Toast.LENGTH_LONG).show();
                     startActivity(new Intent(MainActivity.this, AppActivity.class));
                     finish();
                 })

@@ -45,7 +45,6 @@ public class ResetPasswordActivity extends AppCompatActivity {
             Toast.makeText(this, "Vyplň údaje!", Toast.LENGTH_LONG).show();
             return;
         }
-
         auth = FirebaseAuth.getInstance();
 
         auth.sendPasswordResetEmail(userMail)

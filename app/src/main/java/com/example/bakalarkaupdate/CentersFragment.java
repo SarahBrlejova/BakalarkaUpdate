@@ -44,7 +44,6 @@ public class CentersFragment extends Fragment {
         super.onCreate(savedInstanceState);
         db = FirebaseFirestore.getInstance();
         centersList = new ArrayList<>();
-
     }
 
     @Override

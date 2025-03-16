@@ -3,14 +3,12 @@ package com.example.bakalarkaupdate;
 import com.google.firebase.Timestamp;
 
 public class Center {
-
     private String id;
     private String name;
     private String country;
     private String city;
     private String address;
     private Timestamp createdAt;
-
     public Center() {
     }
 

@@ -67,17 +67,17 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
         auth.createUserWithEmailAndPassword(userName, password)
-                .addOnSuccessListener(authResult -> {
-                    String userId = authResult.getUser().getUid();
-                    Toast.makeText(this, "autentifikácia done!", Toast.LENGTH_LONG).show();
-                    createDocument(userId, userName, age, nickNameStr);
+                .addOnSuccessListener(newUser -> {
+                    String userId = newUser.getUser().getUid();
+                    Toast.makeText(this, "Registrácia úspešná", Toast.LENGTH_LONG).show();
+                    createNewUser(userId, userName, age, nickNameStr);
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(this, "Registrácia zlyhala: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 });
     }
 
-    private void createDocument(String userId, String email, int age, String nickNameStr){
+    private void createNewUser(String userId, String email, int age, String nickNameStr){
         Map<String, Object> user = new HashMap<>();
         user.put("email", email);
         user.put("nick", nickNameStr);
@@ -87,7 +87,7 @@ public class RegisterActivity extends AppCompatActivity {
         user.put("averageDifficulty", "N/A");
 
         db.collection("users").document(userId).set(user)
-                .addOnSuccessListener(aVoid -> {
+                .addOnSuccessListener(success -> {
                     Toast.makeText(this, "Registrácia úspešná!", Toast.LENGTH_LONG).show();
                     finish();
                 })

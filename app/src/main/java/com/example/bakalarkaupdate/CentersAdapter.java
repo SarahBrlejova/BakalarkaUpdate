@@ -13,11 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class CentersAdapter extends RecyclerView.Adapter<CentersAdapter.CentersViewHolder>{
+public class CentersAdapter extends RecyclerView.Adapter<CentersAdapter.CentersViewHolder> {
 
     Context context;
     List<Center> centersList;
-
     private OnItemClickListener listener;
 
     public CentersAdapter(Context context, List<Center> centersList) {
@@ -25,10 +24,9 @@ public class CentersAdapter extends RecyclerView.Adapter<CentersAdapter.CentersV
         this.centersList = centersList;
     }
 
-
     @NonNull
     @Override
-    public CentersAdapter.CentersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CentersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(context).inflate(R.layout.center_item, parent, false);
         return new CentersViewHolder(v);
     }
@@ -52,22 +50,22 @@ public class CentersAdapter extends RecyclerView.Adapter<CentersAdapter.CentersV
         return centersList.size();
     }
 
-
-    public static class CentersViewHolder extends RecyclerView.ViewHolder {
-        TextView tvCenterName, tvCenterAddress, tvCenterID;
-        public CentersViewHolder(@NonNull View itemView) {
-            super(itemView);
-            tvCenterName = itemView.findViewById(R.id.TVCenterItemCenterName);
-            tvCenterAddress = itemView.findViewById(R.id.TVCenterItemCenterAddress);
-            tvCenterID = itemView.findViewById(R.id.TVCenterItemCenterID);
-        }
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
     }
 
     public interface OnItemClickListener {
         void onItemClick(Center center);
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.listener = listener;
+    public static class CentersViewHolder extends RecyclerView.ViewHolder {
+        TextView tvCenterName, tvCenterAddress, tvCenterID;
+
+        public CentersViewHolder(@NonNull View itemView) {
+            super(itemView);
+            tvCenterName = itemView.findViewById(R.id.TVCenterItemCenterName);
+            tvCenterAddress = itemView.findViewById(R.id.TVCenterItemCenterAddress);
+            tvCenterID = itemView.findViewById(R.id.TVCenterItemCenterID);
+        }
     }
 }

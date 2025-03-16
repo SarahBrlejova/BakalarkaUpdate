@@ -35,7 +35,7 @@ public class FirestoreHelper {
         training.put("userId", userId);
         training.put("centerId", centerId);
         training.put("startTraining", FieldValue.serverTimestamp());
-        training.put("endTraining", null);
+        training.put("endTraining", FieldValue.serverTimestamp());
         training.put("totalMeters", 0);
         training.put("totalRoutes", 0);
         training.put("totalBoulders", 0);

@@ -8,7 +8,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,7 @@ public class TrainingFragment extends Fragment {
     private Button btnStart, btnStop;
     private boolean isTraining = false;
     private long startTime = 0L;
-    private long pausedTime = 0L;
+
     private Handler handler = new Handler();
     private Runnable timerRunnable;
     private String trainingId;
@@ -75,14 +74,17 @@ public class TrainingFragment extends Fragment {
 
     private void startTraining() {
         isTraining = true;
+
+        if (getActivity() instanceof AppActivity) {
+            ((AppActivity) getActivity()).hideBottomNav();
+        }
+
         btnStart.setVisibility(View.GONE);
         btnStop.setVisibility(View.VISIBLE);
 
-        if (pausedTime == 0L) {
-            startTime = SystemClock.elapsedRealtime();
-        } else {
-            startTime = SystemClock.elapsedRealtime() - pausedTime;
-        }
+
+        startTime = SystemClock.elapsedRealtime();
+
 
         handler.post(timerRunnable);
         loadFragment(new TrainingCenterFragment());
@@ -90,9 +92,13 @@ public class TrainingFragment extends Fragment {
 
     private void stopTraining() {
         isTraining = false;
+        if (getActivity() instanceof AppActivity) {
+            ((AppActivity) getActivity()).displayBottomNav();
+        }
+
         btnStart.setVisibility(View.VISIBLE);
         btnStop.setVisibility(View.GONE);
-        handler.removeCallbacks(timerRunnable);
+
 
         long milisecTime = SystemClock.elapsedRealtime() - startTime;
         long time = milisecTime / (1000 * 60);
@@ -103,7 +109,6 @@ public class TrainingFragment extends Fragment {
         }
 
         startTime = 0L;
-        pausedTime = 0L;
 
         tvTime.setText(Long.toString(startTime));
 
