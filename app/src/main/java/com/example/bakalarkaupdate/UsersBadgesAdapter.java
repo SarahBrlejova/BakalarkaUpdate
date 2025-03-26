@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 public class UsersBadgesAdapter extends RecyclerView.Adapter<UsersBadgesAdapter.UsersBadgesViewHolder>{
@@ -34,6 +36,10 @@ public class UsersBadgesAdapter extends RecyclerView.Adapter<UsersBadgesAdapter.
     @Override
     public void onBindViewHolder(@NonNull UsersBadgesAdapter.UsersBadgesViewHolder holder, int position) {
         UserBadge userBadge = userBadgeList.get(position);
+        Glide.with(context)
+                .load(userBadge.getImageUrl())
+                .error(R.drawable.ic_launcher_foreground)
+                .into(holder.ivBadgeImage);
     }
 
     @Override

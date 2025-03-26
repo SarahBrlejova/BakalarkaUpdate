@@ -13,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 public class BadgeAdapter extends RecyclerView.Adapter<BadgeAdapter.BadgeViewHolder> {
@@ -46,6 +48,11 @@ public class BadgeAdapter extends RecyclerView.Adapter<BadgeAdapter.BadgeViewHol
 
         holder.tvBadgeName.setText(badge.getName());
         holder.tvBadgeHeight.setText("Height: " + badge.getHeight() + "m");
+
+        Glide.with(context)
+                .load(badge.getImageUrl())
+                .error(R.drawable.ic_launcher_foreground)
+                .into(holder.ivBadgeImage);
 
         if (badge.isUnlocked()) {
             holder.btnBadgeItemUnlock.setVisibility(View.GONE);
