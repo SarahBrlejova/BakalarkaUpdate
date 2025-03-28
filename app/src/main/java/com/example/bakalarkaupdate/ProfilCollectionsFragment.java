@@ -52,7 +52,7 @@ public class ProfilCollectionsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profil_collections, container, false);
         recyclerView = view.findViewById(R.id.recyclerViewProfilCollections);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),3));
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
         adapter = new UsersBadgesAdapter(getContext(), userBadgeList);
         recyclerView.setAdapter(adapter);
 

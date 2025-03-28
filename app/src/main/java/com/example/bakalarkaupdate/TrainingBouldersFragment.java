@@ -102,7 +102,6 @@ public class TrainingBouldersFragment extends Fragment {
                 .whereEqualTo("isActive", true)
                 .addSnapshotListener((querySnapshot, error) -> {
                     if (error != null) {
-                        // handle error
                         return;
                     }
                     if (querySnapshot != null) {

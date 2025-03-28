@@ -7,20 +7,11 @@
     android:padding="8dp"
     tools:context=".ProfilCollectionsFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Unlocked Badges"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:paddingBottom="8dp"
-        android:gravity="center"/>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewProfilCollections"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="717dp"
         android:padding="4dp"
-        android:scrollbars="vertical"/>
+        android:scrollbars="vertical" />
 
 </LinearLayout>

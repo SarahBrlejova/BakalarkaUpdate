@@ -1,45 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:id="@+id/main"
-    android:gravity="center"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/mainLayout"
     tools:context=".MainActivity">
 
-    <EditText
-        android:id="@+id/ETMainEmail"
-        android:layout_width="227dp"
-        android:layout_height="48dp"
-        android:hint="email" />
+    <ImageView
+        android:id="@+id/IVbackgroundImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/pozadie"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true" />
 
-    <EditText
-        android:id="@+id/ETMainPassword"
-        android:layout_width="227dp"
-        android:layout_height="48dp"
-        android:hint="password"
-        android:inputType="textPassword" />
 
-    <Button
-        android:id="@+id/BMainLogin"
-        android:layout_width="227dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Login" />
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="48dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="24dp">
 
-    <Button
-        android:id="@+id/BMainRegister"
-        android:layout_width="227dp"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Register" />
+        android:background="@drawable/round_corner"
+        android:orientation="vertical"
+        android:padding="24dp">
 
-    <Button
-        android:id="@+id/BMainReset"
-        android:layout_width="227dp"
-        android:layout_height="wrap_content"
-        android:text="Reset Password" />
+        <EditText
+            android:id="@+id/ETMainEmail"
+            android:layout_width="227dp"
+            android:layout_height="48dp"
+            android:textColorLink="#3D2060"
+            android:layout_marginBottom="16dp"
+            android:hint="email" />
+
+        <EditText
+            android:id="@+id/ETMainPassword"
+            android:layout_width="227dp"
+            android:layout_height="48dp"
+            android:layout_marginBottom="24dp"
+            android:hint="heslo"
+            android:textColorLink="#3D2060"
+            android:inputType="textPassword" />
+
+        <Button
+            android:id="@+id/BMainLogin"
+            android:layout_width="227dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:backgroundTint="#3D2060"
+            android:text="Prihlásenie" />
+
+        <Button
+            android:id="@+id/BMainRegister"
+            android:layout_width="227dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:backgroundTint="#3D2060"
+            android:text="Registrácia" />
+
+        <Button
+            android:id="@+id/BMainReset"
+            android:layout_width="227dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#3D2060"
+
+            android:text="Resetovanie hesla" />
+    </LinearLayout>
+    </LinearLayout>
 
 
-</LinearLayout>
+</FrameLayout>

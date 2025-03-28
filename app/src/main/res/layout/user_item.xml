@@ -20,12 +20,12 @@
         android:paddingTop="5dp"
         android:gravity="center_vertical">
 
-<!--        <TextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Total meters: "-->
-<!--            android:textSize="16sp"-->
-<!--            android:layout_marginEnd="5dp" />-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total meters: "
+            android:textSize="16sp"
+            android:layout_marginEnd="5dp" />
 
         <TextView
             android:id="@+id/tvUserItemTotalMeters"
@@ -35,12 +35,12 @@
             android:textSize="16sp"
             android:layout_marginEnd="20dp" />
 
-<!--        <TextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Available meters: "-->
-<!--            android:textSize="16sp"-->
-<!--            android:layout_marginEnd="5dp" />-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Available meters: "
+            android:textSize="16sp"
+            android:layout_marginEnd="5dp" />
 
         <TextView
             android:id="@+id/tvUserItemAvailableMeters"
