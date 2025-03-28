@@ -6,10 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -36,7 +39,12 @@ public class CentersAdapter extends RecyclerView.Adapter<CentersAdapter.CentersV
         Center center = centersList.get(position);
         holder.tvCenterName.setText(center.getName());
         holder.tvCenterAddress.setText(center.getAddress());
-        holder.tvCenterID.setText(center.getId());
+
+
+        Glide.with(context)
+                .load(center.getImageUrl())
+                .error(R.drawable.ic_launcher_foreground)
+                .into(holder.ivCenterItemImage);
 
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
@@ -59,13 +67,13 @@ public class CentersAdapter extends RecyclerView.Adapter<CentersAdapter.CentersV
     }
 
     public static class CentersViewHolder extends RecyclerView.ViewHolder {
-        TextView tvCenterName, tvCenterAddress, tvCenterID;
-
+        TextView tvCenterName, tvCenterAddress;
+        ImageView ivCenterItemImage;
         public CentersViewHolder(@NonNull View itemView) {
             super(itemView);
             tvCenterName = itemView.findViewById(R.id.TVCenterItemCenterName);
             tvCenterAddress = itemView.findViewById(R.id.TVCenterItemCenterAddress);
-            tvCenterID = itemView.findViewById(R.id.TVCenterItemCenterID);
+            ivCenterItemImage = itemView.findViewById(R.id.ivCenterItemImage);
         }
     }
 }

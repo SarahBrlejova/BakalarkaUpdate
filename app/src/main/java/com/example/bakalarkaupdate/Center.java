@@ -9,24 +9,27 @@ public class Center {
     private String city;
     private String address;
     private Timestamp createdAt;
+    private String imageUrl;
+
     public Center() {
     }
 
-    public Center(String id, String name, String country, String city, String address, Timestamp createdAt) {
+    public Center(String id, String name, String country, String city, String address, Timestamp createdAt, String imageUrl) {
         this.id = id;
         this.name = name;
         this.country = country;
         this.city = city;
         this.address = address;
         this.createdAt = createdAt;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+        this.imageUrl = imageUrl;
     }
 
     public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -67,5 +70,13 @@ public class Center {
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }
