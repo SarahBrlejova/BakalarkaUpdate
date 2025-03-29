@@ -15,12 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BakalarkaUpdate"
         tools:targetApi="31">
-        <activity
-            android:name=".DetailRouteBoulderActivity"
-            android:exported="false" />
-        <activity
-            android:name=".DetailCenterActivity"
-            android:exported="false" />
+
         <activity
             android:name=".AppActivity"
             android:exported="false" />

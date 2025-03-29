@@ -1,14 +1,19 @@
 package com.example.bakalarkaupdate;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -18,7 +23,6 @@ public class RoutesBouldersAdapter extends RecyclerView.Adapter<RoutesBouldersAd
     List<RouteBoulder> routeBoulderList;
     private OnItemClickListener listener;
     private OnItemLongClickListener longListener;
-
 
     public RoutesBouldersAdapter(Context context, List<RouteBoulder> routeBoulderList) {
         this.context = context;
@@ -37,18 +41,18 @@ public class RoutesBouldersAdapter extends RecyclerView.Adapter<RoutesBouldersAd
     public void onBindViewHolder(@NonNull RoutesBouldersAdapter.RoutesBouldersViewHolder holder, int position) {
         RouteBoulder routeBoulder = routeBoulderList.get(position);
         if (routeBoulder == null) {
-            Log.e("RoutesBouldersAdapter", "RouteBoulder is null at position: " + position);
             return;
         }
-        Log.d("RoutesBouldersAdapter", "Binding route: " + routeBoulder.getName() + ", Active: " + routeBoulder.isActive());
 
         holder.tvRouteBoulderName.setText(routeBoulder.getName());
         holder.tvRouteBoulderDifficulty.setText(routeBoulder.getDifficulty());
-        holder.TVRouteBoulderID.setText(routeBoulder.getId());
+        holder.tvRouteBoulderHeight.setText(routeBoulder.getHeight() + " m");
 
-        int color = changeColor(context, routeBoulder.getColour());
-        holder.tvRouteBoulderName.setTextColor(color);
-        holder.tvRouteBoulderDifficulty.setTextColor(color);
+        Glide.with(context)
+                .load(getImageBasedOnColour(routeBoulder.getColour()))
+                .into(holder.ivRouteBoulderHold);
+
+
 
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
@@ -70,13 +74,15 @@ public class RoutesBouldersAdapter extends RecyclerView.Adapter<RoutesBouldersAd
 
 
     public static class RoutesBouldersViewHolder extends RecyclerView.ViewHolder {
-        TextView tvRouteBoulderName, tvRouteBoulderDifficulty, TVRouteBoulderID;
+        TextView tvRouteBoulderName, tvRouteBoulderDifficulty, tvRouteBoulderHeight;
+        ImageView ivRouteBoulderHold;
 
         public RoutesBouldersViewHolder(@NonNull View itemView) {
             super(itemView);
             tvRouteBoulderName = itemView.findViewById(R.id.tvRouteBoulderName);
             tvRouteBoulderDifficulty = itemView.findViewById(R.id.tvRouteBoulderDifficulty);
-            TVRouteBoulderID = itemView.findViewById(R.id.TVRouteBoulderID);
+            tvRouteBoulderHeight = itemView.findViewById(R.id.tvRouteBoulderHeight);
+            ivRouteBoulderHold = itemView.findViewById(R.id.ivRouteBoulderHold);
         }
     }
 
@@ -94,14 +100,23 @@ public class RoutesBouldersAdapter extends RecyclerView.Adapter<RoutesBouldersAd
         this.longListener = listener;
     }
 
-    public int changeColor(Context context, String colorName){
-        int colorId = context.getResources().getIdentifier(colorName, "color", context.getPackageName());
-
-        if (colorId == 0) {
-            return context.getResources().getColor(R.color.black);
+    private int getImageBasedOnColour(String colorName) {
+        switch (colorName.toLowerCase()) {
+            case "red": return R.drawable.red;
+            case "blue": return R.drawable.blue;
+            case "green": return R.drawable.green;
+            case "black": return R.drawable.black;
+            case "white": return R.drawable.white;
+            case "yellow": return R.drawable.yellow;
+            case "orange": return R.drawable.orange;
+            case "purple": return R.drawable.purple;
+            case "pink": return R.drawable.pink;
+            case "brown": return R.drawable.brown;
+            case "grey": return R.drawable.grey;
+            default: return R.drawable.grey;
         }
-        return context.getResources().getColor(colorId);
     }
+
 
 
 }
