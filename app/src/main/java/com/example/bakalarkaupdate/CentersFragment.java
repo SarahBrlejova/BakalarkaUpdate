@@ -56,10 +56,12 @@ public class CentersFragment extends Fragment {
         adapter = new CentersAdapter(getContext(), centersList);
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(center -> {
-            Intent intent = new Intent(getActivity(), DetailCenterActivity.class);
-            intent.putExtra("centerId", center.getId());
-            Log.d("CentersFragment", "Center ID: " + center.getId());
-            startActivity(intent);
+            DetailCenterFragment fragment = DetailCenterFragment.newInstance(center.getId(), center.getName());
+            requireActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(null)
+                    .commit();
         });
         loadData();
         return view;

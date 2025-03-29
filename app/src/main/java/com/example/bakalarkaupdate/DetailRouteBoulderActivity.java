@@ -34,89 +34,89 @@ public class DetailRouteBoulderActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        tvName = findViewById(R.id.tvDetailRouteBoulderName);
-        tvColour = findViewById(R.id.tvDetailRouteBoulderColour);
-        tvDifficulty = findViewById(R.id.tvDetailRouteBoulderDifficulty);
-        tvHeight = findViewById(R.id.tvDetailRouteBoulderHeight);
-        tvSektor = findViewById(R.id.tvDetailRouteBoulderSektor);
-        tvSetter = findViewById(R.id.tvDetailRouteBoulderSetter);
-        tvNotes = findViewById(R.id.tvDetailRouteBoulderNotes);
-        tvCreatedAt = findViewById(R.id.tvDetailRouteBoulderCreatedAt);
-        tvIsActive = findViewById(R.id.tvDetailRouteBoulderIsActive);
-        tvId = findViewById(R.id.tvDetailRouteBoulderId);
-
-
-        centerId = getIntent().getStringExtra("centerId");
-        type = getIntent().getStringExtra("type");
-
-        loadDetails();
-
-        Button btnBack = findViewById(R.id.btnDetailRouteBoulderFragmentBack);
-        btnBack.setOnClickListener(v -> finish());
+//        tvName = findViewById(R.id.tvDetailRouteBoulderName);
+//        tvColour = findViewById(R.id.tvDetailRouteBoulderColour);
+//        tvDifficulty = findViewById(R.id.tvDetailRouteBoulderDifficulty);
+//        tvHeight = findViewById(R.id.tvDetailRouteBoulderHeight);
+//        tvSektor = findViewById(R.id.tvDetailRouteBoulderSektor);
+//        tvSetter = findViewById(R.id.tvDetailRouteBoulderSetter);
+//        tvNotes = findViewById(R.id.tvDetailRouteBoulderNotes);
+//        tvCreatedAt = findViewById(R.id.tvDetailRouteBoulderCreatedAt);
+//        tvIsActive = findViewById(R.id.tvDetailRouteBoulderIsActive);
+//        tvId = findViewById(R.id.tvDetailRouteBoulderId);
+//
+//
+//        centerId = getIntent().getStringExtra("centerId");
+//        type = getIntent().getStringExtra("type");
+//
+//        loadDetails();
+//
+//        Button btnBack = findViewById(R.id.btnDetailRouteBoulderFragmentBack);
+//        btnBack.setOnClickListener(v -> finish());
     }
 
-    private void loadDetails() {
-        if ("boulder".equals(type)) {
-            boulderId = getIntent().getStringExtra("boulderId");
-            db.collection("centers")
-                    .document(centerId)
-                    .collection("boulders")
-                    .document(boulderId)
-                    .get()
-                    .addOnSuccessListener(documentSnapshot -> {
-                        if (documentSnapshot.exists()) {
-                            RouteBoulder routeBoulder = documentSnapshot.toObject(RouteBoulder.class);
-                            if (routeBoulder != null) {
-                                routeBoulder.setId(documentSnapshot.getId());
-
-                                tvName.setText(routeBoulder.getName());
-                                tvColour.setText(routeBoulder.getColour());
-                                tvDifficulty.setText(routeBoulder.getDifficulty());
-                                tvHeight.setText(String.valueOf(routeBoulder.getHeight()));
-                                tvSektor.setText(routeBoulder.getSektor());
-                                tvSetter.setText(routeBoulder.getSetter());
-                                tvNotes.setText(routeBoulder.getNotes());
-                                tvCreatedAt.setText(routeBoulder.getCreatedAt().toDate().toString());
-                                tvId.setText(routeBoulder.getId());
-                            }
-                        } else {
-                            Toast.makeText(this, "No details found for this route", Toast.LENGTH_LONG).show();
-                        }
-                    })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(this, "Error loading details: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                    });
-        } else if ("route".equals(type)) {
-            routeId = getIntent().getStringExtra("routeId");
-            db.collection("centers")
-                    .document(centerId)
-                    .collection("routes")
-                    .document(routeId)
-                    .get()
-                    .addOnSuccessListener(documentSnapshot -> {
-                        if (documentSnapshot.exists()) {
-                            RouteBoulder routeBoulder = documentSnapshot.toObject(RouteBoulder.class);
-                            if (routeBoulder != null) {
-                                routeBoulder.setId(documentSnapshot.getId());
-                                tvName.setText(routeBoulder.getName());
-                                tvColour.setText(routeBoulder.getColour());
-                                tvDifficulty.setText(routeBoulder.getDifficulty());
-                                tvHeight.setText(String.valueOf(routeBoulder.getHeight()));
-                                tvSektor.setText(routeBoulder.getSektor());
-                                tvSetter.setText(routeBoulder.getSetter());
-                                tvNotes.setText(routeBoulder.getNotes());
-                                tvCreatedAt.setText(routeBoulder.getCreatedAt().toDate().toString());
-                                tvId.setText(routeBoulder.getId());
-                            }
-                        } else {
-                            Toast.makeText(this, "No details found for this route", Toast.LENGTH_LONG).show();
-                        }
-                    })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(this, "Error loading details: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                    });
-        }
-
-    }
+//    private void loadDetails() {
+//        if ("boulder".equals(type)) {
+//            boulderId = getIntent().getStringExtra("boulderId");
+//            db.collection("centers")
+//                    .document(centerId)
+//                    .collection("boulders")
+//                    .document(boulderId)
+//                    .get()
+//                    .addOnSuccessListener(documentSnapshot -> {
+//                        if (documentSnapshot.exists()) {
+//                            RouteBoulder routeBoulder = documentSnapshot.toObject(RouteBoulder.class);
+//                            if (routeBoulder != null) {
+//                                routeBoulder.setId(documentSnapshot.getId());
+//
+//                                tvName.setText(routeBoulder.getName());
+//                                tvColour.setText(routeBoulder.getColour());
+//                                tvDifficulty.setText(routeBoulder.getDifficulty());
+//                                tvHeight.setText(String.valueOf(routeBoulder.getHeight()));
+//                                tvSektor.setText(routeBoulder.getSektor());
+//                                tvSetter.setText(routeBoulder.getSetter());
+//                                tvNotes.setText(routeBoulder.getNotes());
+//                                tvCreatedAt.setText(routeBoulder.getCreatedAt().toDate().toString());
+//                                tvId.setText(routeBoulder.getId());
+//                            }
+//                        } else {
+//                            Toast.makeText(this, "No details found for this route", Toast.LENGTH_LONG).show();
+//                        }
+//                    })
+//                    .addOnFailureListener(e -> {
+//                        Toast.makeText(this, "Error loading details: " + e.getMessage(), Toast.LENGTH_LONG).show();
+//                    });
+//        } else if ("route".equals(type)) {
+//            routeId = getIntent().getStringExtra("routeId");
+//            db.collection("centers")
+//                    .document(centerId)
+//                    .collection("routes")
+//                    .document(routeId)
+//                    .get()
+//                    .addOnSuccessListener(documentSnapshot -> {
+//                        if (documentSnapshot.exists()) {
+//                            RouteBoulder routeBoulder = documentSnapshot.toObject(RouteBoulder.class);
+//                            if (routeBoulder != null) {
+//                                routeBoulder.setId(documentSnapshot.getId());
+//                                tvName.setText(routeBoulder.getName());
+//                                tvColour.setText(routeBoulder.getColour());
+//                                tvDifficulty.setText(routeBoulder.getDifficulty());
+//                                tvHeight.setText(String.valueOf(routeBoulder.getHeight()));
+//                                tvSektor.setText(routeBoulder.getSektor());
+//                                tvSetter.setText(routeBoulder.getSetter());
+//                                tvNotes.setText(routeBoulder.getNotes());
+//                                tvCreatedAt.setText(routeBoulder.getCreatedAt().toDate().toString());
+//                                tvId.setText(routeBoulder.getId());
+//                            }
+//                        } else {
+//                            Toast.makeText(this, "No details found for this route", Toast.LENGTH_LONG).show();
+//                        }
+//                    })
+//                    .addOnFailureListener(e -> {
+//                        Toast.makeText(this, "Error loading details: " + e.getMessage(), Toast.LENGTH_LONG).show();
+//                    });
+//        }
+//
+//    }
 
 }

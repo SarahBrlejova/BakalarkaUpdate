@@ -49,15 +49,21 @@ public class RoutesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_routes, container, false);
         recyclerView = view.findViewById(R.id.recyclerViewRouters);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new RoutesBouldersAdapter(getContext(),routesList);
+        adapter = new RoutesBouldersAdapter(getContext(), routesList);
         recyclerView.setAdapter(adapter);
 
         adapter.setOnItemClickListener(route -> {
-            Intent intent = new Intent(getActivity(), DetailRouteBoulderActivity.class);
-            intent.putExtra("routeId", route.getId());
-            intent.putExtra("centerId", centerId);
-            intent.putExtra("type", "route");
-            startActivity(intent);
+            DetailRouteBoulderFragment fragment = DetailRouteBoulderFragment.newInstance(
+                    centerId,
+                    "route",
+                    route.getId()
+            );
+            requireActivity()
+                    .getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(null)
+                    .commit();
         });
 
         loadData();

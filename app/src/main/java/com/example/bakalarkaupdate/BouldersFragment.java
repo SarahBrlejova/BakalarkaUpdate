@@ -53,11 +53,17 @@ public class BouldersFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         adapter.setOnItemClickListener(boulder -> {
-            Intent intent = new Intent(getActivity(), DetailRouteBoulderActivity.class);
-            intent.putExtra("boulderId", boulder.getId());
-            intent.putExtra("centerId", centerId);
-            intent.putExtra("type", "boulder");
-            startActivity(intent);
+            DetailRouteBoulderFragment fragment = DetailRouteBoulderFragment.newInstance(
+                    centerId,
+                    "boulder",
+                    boulder.getId()
+            );
+            requireActivity()
+                    .getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(null)
+                    .commit();
         });
 
         loadData();
@@ -76,7 +82,6 @@ public class BouldersFragment extends Fragment {
                 .whereEqualTo("isActive", true)
                 .addSnapshotListener((querySnapshot, error) -> {
                     if (error != null) {
-                        // handle error
                         return;
                     }
                     if (querySnapshot != null) {
