@@ -17,10 +17,12 @@ public class Training {
     private int totalRoutes;
     private String userId;
 
+    private long totalDifficultyPoints;
+
     public Training() {
     }
 
-    public Training(String id, String centerId, Map<String, Object> completedBoulders, Map<String, Object> completedRoutes, Timestamp startTraining, Timestamp endTraining, int totalBoulders, int totalMeters, int totalRoutes, String userId) {
+    public Training(String id, String centerId, Map<String, Object> completedBoulders, Map<String, Object> completedRoutes, Timestamp startTraining, Timestamp endTraining, int totalBoulders, int totalMeters, int totalRoutes, String userId, long totalDifficultyPoints) {
         this.id = id;
         this.centerId = centerId;
         this.completedBoulders = completedBoulders;
@@ -31,10 +33,24 @@ public class Training {
         this.totalMeters = totalMeters;
         this.totalRoutes = totalRoutes;
         this.userId = userId;
+        this.totalDifficultyPoints = totalDifficultyPoints;
     }
 
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
+    public long getDifficultyValue() {
+        return totalDifficultyPoints;
+    }
+
+    public void setDifficultyValue(long difficultyValue) {
+        this.totalDifficultyPoints = difficultyValue;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getCenterId() {
         return centerId;

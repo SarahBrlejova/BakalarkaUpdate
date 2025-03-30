@@ -8,17 +8,19 @@ public class RouteBoulder {
     private Timestamp createdAt;
     private String difficulty;
     private int height;
+    private long difficultyValue;
     private boolean isActive;
     private String name;
     private String notes;
     private String sektor;
     private String setter;
     private int timesClimbed = 0;
+    private long totalDifficultyPoints = 0;
 
     public RouteBoulder() {
     }
 
-    public RouteBoulder(String id, String colour, Timestamp createdAt, String difficulty, int height, boolean isActive, String name, String notes, String sektor, String setter) {
+    public RouteBoulder(String id, String colour, Timestamp createdAt, String difficulty, long difficultyValue, int height, boolean isActive, String name, String notes, String sektor, String setter) {
         this.id = id;
         this.colour = colour;
         this.createdAt = createdAt;
@@ -29,6 +31,7 @@ public class RouteBoulder {
         this.notes = notes;
         this.sektor = sektor;
         this.setter = setter;
+        this.difficultyValue = difficultyValue;
     }
 
     public String getId() {
@@ -69,6 +72,14 @@ public class RouteBoulder {
 
     public void setHeight(int height) {
         this.height = height;
+    }
+
+    public long getDifficultyValue() {
+        return difficultyValue;
+    }
+
+    public void setDifficultyValue(long difficultyValue) {
+        this.difficultyValue = difficultyValue;
     }
 
     public boolean isActive() {
@@ -114,6 +125,17 @@ public class RouteBoulder {
     public int getClimbs() {
         return timesClimbed;
     }
+
+    public void countUpTotalDifficultyPoints() {
+        totalDifficultyPoints = totalDifficultyPoints + difficultyValue;
+    }
+
+    public void countDownTotalDifficultyPoints() {
+        if (timesClimbed > 0 && totalDifficultyPoints > 0) {
+            totalDifficultyPoints = totalDifficultyPoints - difficultyValue;
+        }
+    }
+
     public void countUpClimbs() {
         timesClimbed++;
     }

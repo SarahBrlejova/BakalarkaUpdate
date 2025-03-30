@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,8 +72,8 @@ public class TrainingRoutesFragment extends Fragment {
                 adapter.notifyItemChanged(position);
             }
             countUp = true;
-            firestoreHelper.updateTrainingMetersRoutes(trainingId, countUp, route.getHeight());
-            firestoreHelper.updateTrainingRoutes(trainingId, route.getId(), route.getClimbs(), route.getDifficulty());
+            firestoreHelper.updateTrainingAllDataForRoutes(trainingId, countUp, route.getHeight(), route.getDifficultyValue());
+            firestoreHelper.updateTrainingMapRoutes(trainingId, route.getId(), route.getClimbs(), route.getDifficulty(), route.getDifficultyValue());
         });
         adapter.setOnItemLongClickListener(route -> {
             route.countDownClimbs();
@@ -84,9 +83,9 @@ public class TrainingRoutesFragment extends Fragment {
             }
 
             countUp = false;
-            firestoreHelper.updateTrainingMetersRoutes(trainingId, countUp, route.getHeight());
+            firestoreHelper.updateTrainingAllDataForRoutes(trainingId, countUp, route.getHeight(), route.getDifficultyValue());
 
-            firestoreHelper.updateTrainingRoutes(trainingId, route.getId(), route.getClimbs(), route.getDifficulty());
+            firestoreHelper.updateTrainingMapRoutes(trainingId, route.getId(), route.getClimbs(), route.getDifficulty(), route.getDifficultyValue());
         });
 
         loadData();

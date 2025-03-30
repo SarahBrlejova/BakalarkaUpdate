@@ -144,6 +144,7 @@ public class FirestoreHelper {
         training.put("startTraining", FieldValue.serverTimestamp());
         training.put("endTraining", FieldValue.serverTimestamp());
         training.put("totalMeters", 0);
+        training.put("totalDifficultyPoints", 0);
         training.put("totalRoutes", 0);
         training.put("totalBoulders", 0);
         training.put("completedRoutes", new HashMap<>());
@@ -225,6 +226,7 @@ public class FirestoreHelper {
                     DocumentSnapshot trainingSnapshot = trainingTask.getResult();
                     if (trainingSnapshot.exists()) {
                         int trainingMeters = trainingSnapshot.getLong("totalMeters").intValue();
+                        long trainingTotalDifficultyPoints = trainingSnapshot.getLong("totalDifficultyPoints");
                         userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> userTask) {
@@ -233,10 +235,12 @@ public class FirestoreHelper {
                                     if (userDocumnent.exists()) {
                                         int userTotalMeters = userDocumnent.getLong("totalMeters").intValue();
                                         int userAvailableMeters = userDocumnent.getLong("availableMeters").intValue();
+                                        long userTotalDifficultyPoints = userDocumnent.getLong("totalDifficultyPoints");
                                         int totalMeters = userTotalMeters + trainingMeters;
                                         int availableMeters = userAvailableMeters + trainingMeters;
+                                        long totalDifficultyPoints = userTotalDifficultyPoints + trainingTotalDifficultyPoints;
 
-                                        userRef.update("totalMeters", totalMeters, "availableMeters", availableMeters)
+                                        userRef.update("totalMeters", totalMeters, "availableMeters", availableMeters, "totalDifficultyPoints", totalDifficultyPoints)
                                                 .addOnSuccessListener(success -> Log.d("F", "User meters updated"))
                                                 .addOnFailureListener(fail -> Log.e("F", "Error with user meters"));
                                     }
@@ -254,12 +258,13 @@ public class FirestoreHelper {
     }
 
 
-    public void updateTrainingRoutes(String trainingId, String routeId, int timesClimbed, String difficulty) {
+    public void updateTrainingMapRoutes(String trainingId, String routeId, int timesClimbed, String difficulty, long difficultyValue) {
         DocumentReference trainingRef = db.collection("trainings").document(trainingId);
         if (timesClimbed > 0) {
             Map<String, Object> routeData = new HashMap<>();
             routeData.put("timesClimbed", timesClimbed);
             routeData.put("difficulty", difficulty);
+            routeData.put("difficultyValue", difficultyValue);
 
             trainingRef.update("completedRoutes." + routeId, routeData)
                     .addOnSuccessListener(success -> Log.d("F", "Updated climb count"))
@@ -271,16 +276,19 @@ public class FirestoreHelper {
         }
     }
 
-    public void updateTrainingMetersRoutes(String trainingId, boolean countUP, int height) {
+    public void updateTrainingAllDataForRoutes(String trainingId, boolean countUP, int height, long difficultyValue) {
         DocumentReference training = db.collection("trainings").document(trainingId);
         training.get().addOnSuccessListener(documentSnapshot -> {
             int meters = documentSnapshot.getLong("totalMeters").intValue();
             int routes = documentSnapshot.getLong("totalRoutes").intValue();
+            long totalDifficultyPoints = documentSnapshot.getLong("totalDifficultyPoints");
             if (countUP) {
                 meters += height;
                 routes += 1;
+                totalDifficultyPoints += difficultyValue;
             } else {
                 meters -= height;
+                totalDifficultyPoints += difficultyValue;
                 if (routes > 0) {
                     routes -= 1;
                 }
@@ -288,6 +296,7 @@ public class FirestoreHelper {
             Map<String, Object> updates = new HashMap<>();
             updates.put("totalMeters", meters);
             updates.put("totalRoutes", routes);
+            updates.put("totalDifficultyPoints", totalDifficultyPoints);
             training.update(updates)
                     .addOnSuccessListener(success -> Log.d("F", "Updated training routes data"))
                     .addOnFailureListener(fail -> Log.e("F", "Error training routes data"));

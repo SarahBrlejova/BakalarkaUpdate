@@ -85,6 +85,7 @@ public class RegisterActivity extends AppCompatActivity {
         user.put("totalMeters", 0);
         user.put("availableMeters", 0);
         user.put("averageDifficulty", "N/A");
+        user.put("totalDifficultyPoints", 0);
 
         db.collection("users").document(userId).set(user)
                 .addOnSuccessListener(success -> {

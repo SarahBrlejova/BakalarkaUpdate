@@ -73,7 +73,6 @@ public class RoutesFragment extends Fragment {
 
     private void loadData() {
         if (centerId == null || centerId.isEmpty()) {
-            Toast.makeText(getContext(), "Chyba: centerId nie je dostupné", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -83,7 +82,6 @@ public class RoutesFragment extends Fragment {
                 .whereEqualTo("isActive", true)
                 .addSnapshotListener((querySnapshot, error) -> {
                     if (error != null) {
-                        // handle error
                         return;
                     }
                     if (querySnapshot != null) {
@@ -97,7 +95,6 @@ public class RoutesFragment extends Fragment {
                     }
                 });
     }
-
 
 
     @Override
