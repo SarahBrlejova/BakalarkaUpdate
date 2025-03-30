@@ -288,7 +288,7 @@ public class FirestoreHelper {
                 totalDifficultyPoints += difficultyValue;
             } else {
                 meters -= height;
-                totalDifficultyPoints += difficultyValue;
+                totalDifficultyPoints -= difficultyValue;
                 if (routes > 0) {
                     routes -= 1;
                 }
@@ -303,15 +303,18 @@ public class FirestoreHelper {
         }).addOnFailureListener(fail -> Log.e("F", "Error with training data"));
     }
 
-    public void updateTrainingMetersBoulders(String trainingId, boolean countUP, int height) {
+    public void updateTrainingAllDataForBoulders(String trainingId, boolean countUP, int height, long difficultyValue) {
         DocumentReference training = db.collection("trainings").document(trainingId);
         training.get().addOnSuccessListener(documentSnapshot -> {
             int meters = documentSnapshot.getLong("totalMeters").intValue();
             int boulders = documentSnapshot.getLong("totalBoulders").intValue();
+            long totalDifficultyPoints = documentSnapshot.getLong("totalDifficultyPoints");
             if (countUP) {
                 meters += height;
                 boulders += 1;
+                totalDifficultyPoints += difficultyValue;
             } else {
+                totalDifficultyPoints -= difficultyValue;
                 meters -= height;
                 if (boulders > 0) {
                     boulders -= 1;
@@ -320,18 +323,19 @@ public class FirestoreHelper {
             Map<String, Object> updates = new HashMap<>();
             updates.put("totalMeters", meters);
             updates.put("totalBoulders", boulders);
+            updates.put("totalDifficultyPoints", totalDifficultyPoints);
             training.update(updates).addOnSuccessListener(success -> Log.d("F", "Updated training boulders data"))
                     .addOnFailureListener(fail -> Log.e("F", "Error training boulders data"));
         }).addOnFailureListener(fail -> Log.e("F", "Error with training data"));
     }
 
-    public void updateTrainingBoulders(String trainingId, String boulderId, int timesClimbed, String difficulty) {
+    public void updateTrainingMapBoulders(String trainingId, String boulderId, int timesClimbed, String difficulty, long difficultyValue) {
         DocumentReference trainingRef = db.collection("trainings").document(trainingId);
         if (timesClimbed > 0) {
             Map<String, Object> boulderData = new HashMap<>();
             boulderData.put("timesClimbed", timesClimbed);
             boulderData.put("difficulty", difficulty);
-
+            boulderData.put("difficultyValue", difficultyValue);
             trainingRef.update("completedBoulders." + boulderId, boulderData)
                     .addOnSuccessListener(success -> Log.d("F", "Updated boulder climb count"))
                     .addOnFailureListener(fail -> Log.e("F", "Error updating climb count"));

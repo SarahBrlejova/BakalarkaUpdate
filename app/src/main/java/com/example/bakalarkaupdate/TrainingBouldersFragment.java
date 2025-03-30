@@ -21,15 +21,15 @@ import java.util.List;
 
 public class TrainingBouldersFragment extends Fragment {
 
-    private FirebaseFirestore db;
     String centerId;
     boolean countUp;
+    String trainingId;
+    private FirebaseFirestore db;
     private RecyclerView recyclerView;
     private RoutesBouldersTrainingAdapter adapter;
     private List<RouteBoulder> boulderList;
     private ListenerRegistration firestoreListener;
     private FirestoreHelper firestoreHelper;
-    String trainingId;
 
     public TrainingBouldersFragment() {
         // Required empty public constructor
@@ -63,7 +63,7 @@ public class TrainingBouldersFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_training_boulders, container, false);
         recyclerView = view.findViewById(R.id.recyclerViewTrainingBoulders);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new RoutesBouldersTrainingAdapter(getContext(),boulderList);
+        adapter = new RoutesBouldersTrainingAdapter(getContext(), boulderList);
         recyclerView.setAdapter(adapter);
 
         adapter.setOnItemClickListener(boulder -> {
@@ -73,8 +73,8 @@ public class TrainingBouldersFragment extends Fragment {
                 adapter.notifyItemChanged(position);
             }
             countUp = true;
-            firestoreHelper.updateTrainingMetersBoulders(trainingId, countUp, boulder.getHeight());
-            firestoreHelper.updateTrainingBoulders(trainingId, boulder.getId(), boulder.getClimbs(), boulder.getDifficulty());
+            firestoreHelper.updateTrainingAllDataForBoulders(trainingId, countUp, boulder.getHeight(), boulder.getDifficultyValue());
+            firestoreHelper.updateTrainingMapBoulders(trainingId, boulder.getId(), boulder.getClimbs(), boulder.getDifficulty(), boulder.getDifficultyValue());
         });
         adapter.setOnItemLongClickListener(boulder -> {
             boulder.countDownClimbs();
@@ -83,8 +83,8 @@ public class TrainingBouldersFragment extends Fragment {
                 adapter.notifyItemChanged(position);
             }
             countUp = false;
-            firestoreHelper.updateTrainingMetersBoulders(trainingId, countUp, boulder.getHeight());
-            firestoreHelper.updateTrainingBoulders(trainingId, boulder.getId(), boulder.getClimbs(), boulder.getDifficulty());
+            firestoreHelper.updateTrainingAllDataForBoulders(trainingId, countUp, boulder.getHeight(), boulder.getDifficultyValue());
+            firestoreHelper.updateTrainingMapBoulders(trainingId, boulder.getId(), boulder.getClimbs(), boulder.getDifficulty(), boulder.getDifficultyValue());
         });
 
         loadData();
@@ -115,6 +115,7 @@ public class TrainingBouldersFragment extends Fragment {
                     }
                 });
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
