@@ -15,9 +15,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.ArrayList;
+
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class FirestoreHelper {
@@ -49,21 +48,21 @@ public class FirestoreHelper {
             for (Map.Entry<String, Object> entry : completedRoutes.entrySet()) {
                 String routeId = entry.getKey();
                 Map<String, Object> routeData = (Map<String, Object>) entry.getValue();
-                Number climbedNum = (Number) routeData.get("timesClimbed");
+                Number climbedRouteTraining = (Number) routeData.get("timesClimbed");
 
-                long newClimbs = climbedNum.longValue();
+                long newClimbs = climbedRouteTraining.longValue();
                 String docId = userId + "_" + routeId;
                 DocumentReference climbedRouteRef = db.collection("climbedRoutes").document(docId);
 
                 climbedRouteRef.get().addOnSuccessListener(doc -> {
                     if (doc.exists()) {
-                        Long currentClimbs = doc.getLong("climbs");
-                        if (currentClimbs == null) {
-                            currentClimbs = 0L;
+                        Long climbsFromFirestore = doc.getLong("climbs");
+                        if (climbsFromFirestore == null) {
+                            climbsFromFirestore = 0L;
                         }
 
                         Map<String, Object> updates = new HashMap<>();
-                        updates.put("climbs", currentClimbs + newClimbs);
+                        updates.put("climbs", climbsFromFirestore + newClimbs);
                         updates.put("lastClimbed", FieldValue.serverTimestamp());
 
                         climbedRouteRef.update(updates);
@@ -101,9 +100,9 @@ public class FirestoreHelper {
             for (Map.Entry<String, Object> entry : completedBoulders.entrySet()) {
                 String boulderID = entry.getKey();
                 Map<String, Object> routeData = (Map<String, Object>) entry.getValue();
-                Number climbedNum = (Number) routeData.get("timesClimbed");
+                Number climbedBoulderTraining = (Number) routeData.get("timesClimbed");
 
-                long newClimbs = climbedNum.longValue();
+                long newClimbs = climbedBoulderTraining.longValue();
                 String docId = userId + "_" + boulderID;
                 DocumentReference climbedBoulderRef = db.collection("climbedBoulders").document(docId);
 

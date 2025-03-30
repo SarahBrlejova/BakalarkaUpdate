@@ -99,10 +99,6 @@ public class TrainingFragment extends Fragment {
         btnStart.setVisibility(View.VISIBLE);
         btnStop.setVisibility(View.GONE);
 
-
-        long milisecTime = SystemClock.elapsedRealtime() - startTime;
-        long time = milisecTime / (1000 * 60);
-
         if (trainingId != null) {
             firestoreHelper.endTraining(trainingId);
             firestoreHelper.updateUserClimbedMeters(trainingId);
