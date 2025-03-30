@@ -98,6 +98,8 @@ public class RoutesFragment extends Fragment {
                 });
     }
 
+
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();

@@ -29,6 +29,114 @@ public class FirestoreHelper {
         centers = db.collection("centers");
     }
 
+    public void updateClimbedRoutes(String trainingId) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        DocumentReference trainingRef = db.collection("trainings").document(trainingId);
+
+        trainingRef.get().addOnSuccessListener(trainingSnapshot -> {
+
+            Map<String, Object> training = trainingSnapshot.getData();
+
+            String centerId = (String) training.get("centerId");
+            Map<String, Object> completedRoutes = (Map<String, Object>) training.get("completedRoutes");
+
+            if (centerId == null || completedRoutes == null) {
+                return;
+            }
+
+            for (Map.Entry<String, Object> entry : completedRoutes.entrySet()) {
+                String routeId = entry.getKey();
+                Map<String, Object> routeData = (Map<String, Object>) entry.getValue();
+                Number climbedNum = (Number) routeData.get("timesClimbed");
+
+                long newClimbs = climbedNum.longValue();
+                String docId = userId + "_" + routeId;
+                DocumentReference climbedRouteRef = db.collection("climbedRoutes").document(docId);
+
+                climbedRouteRef.get().addOnSuccessListener(doc -> {
+                    if (doc.exists()) {
+                        Long currentClimbs = doc.getLong("climbs");
+                        if (currentClimbs == null) {
+                            currentClimbs = 0L;
+                        }
+
+                        Map<String, Object> updates = new HashMap<>();
+                        updates.put("climbs", currentClimbs + newClimbs);
+                        updates.put("lastClimbed", FieldValue.serverTimestamp());
+
+                        climbedRouteRef.update(updates);
+                    } else {
+                        Map<String, Object> newClimb = new HashMap<>();
+                        newClimb.put("routeId", routeId);
+                        newClimb.put("userId", userId);
+                        newClimb.put("centerId", centerId);
+                        newClimb.put("climbs", newClimbs);
+                        newClimb.put("lastDateClimbed", FieldValue.serverTimestamp());
+
+                        climbedRouteRef.set(newClimb);
+                    }
+                });
+            }
+        }).addOnFailureListener(e -> {
+            Log.e("e", "Error", e);
+        });
+    }
+
+    public void updateClimbedBoulders(String trainingId) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        DocumentReference trainingRef = db.collection("trainings").document(trainingId);
+        trainingRef.get().addOnSuccessListener(trainingSnapshot -> {
+            Map<String, Object> training = trainingSnapshot.getData();
+            String centerId = (String) training.get("centerId");
+            Map<String, Object> completedBoulders = (Map<String, Object>) training.get("completedBoulders");
+
+            if (centerId == null || completedBoulders == null) {
+                return;
+            }
+
+            for (Map.Entry<String, Object> entry : completedBoulders.entrySet()) {
+                String boulderID = entry.getKey();
+                Map<String, Object> routeData = (Map<String, Object>) entry.getValue();
+                Number climbedNum = (Number) routeData.get("timesClimbed");
+
+                long newClimbs = climbedNum.longValue();
+                String docId = userId + "_" + boulderID;
+                DocumentReference climbedBoulderRef = db.collection("climbedBoulders").document(docId);
+
+                climbedBoulderRef.get().addOnSuccessListener(doc -> {
+                    if (doc.exists()) {
+                        Long currentClimbs = doc.getLong("climbs");
+                        if (currentClimbs == null) {
+                            currentClimbs = 0L;
+                        }
+
+                        Map<String, Object> updates = new HashMap<>();
+                        updates.put("climbs", currentClimbs + newClimbs);
+                        updates.put("lastClimbed", FieldValue.serverTimestamp());
+
+                        climbedBoulderRef.update(updates);
+                    } else {
+                        Map<String, Object> newClimb = new HashMap<>();
+                        newClimb.put("boulderId", boulderID);
+                        newClimb.put("userId", userId);
+                        newClimb.put("centerId", centerId);
+                        newClimb.put("climbs", newClimbs);
+                        newClimb.put("lastDateClimbed", FieldValue.serverTimestamp());
+
+                        climbedBoulderRef.set(newClimb);
+                    }
+                });
+            }
+        }).addOnFailureListener(e -> {
+            Log.e("e", "Error", e);
+        });
+    }
+
+
     public void startTraining(String centerId, GetNewCreatedID getNewCreatedID) {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Map<String, Object> training = new HashMap<>();

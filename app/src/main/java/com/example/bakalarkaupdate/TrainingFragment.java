@@ -106,6 +106,8 @@ public class TrainingFragment extends Fragment {
         if (trainingId != null) {
             firestoreHelper.endTraining(trainingId);
             firestoreHelper.updateUserClimbedMeters(trainingId);
+            firestoreHelper.updateClimbedRoutes(trainingId);
+            firestoreHelper.updateClimbedBoulders(trainingId);
         }
 
         startTime = 0L;
