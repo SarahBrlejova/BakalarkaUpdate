@@ -5,10 +5,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -36,13 +39,14 @@ public class RoutesBouldersTrainingAdapter extends RecyclerView.Adapter<RoutesBo
         RouteBoulder routeBoulder = routeBoulderList.get(position);
 
         holder.tvTrainingRouteBoulderName.setText(routeBoulder.getName());
+        holder.tvRouteBoulderTrainingHeight.setText(routeBoulder.getHeight() + " m");
         holder.tvTrainingRouteBoulderDifficulty.setText(routeBoulder.getDifficulty());
-        holder.tvTrainingRouteBoulderID.setText(routeBoulder.getId());
         holder.tvTrainingRouteBoulderTimesClimbed.setText("Prelezy: " + routeBoulder.getClimbs());
 
-        int color = changeColor(context, routeBoulder.getColour());
-        holder.tvTrainingRouteBoulderName.setTextColor(color);
-        holder.tvTrainingRouteBoulderDifficulty.setTextColor(color);
+
+        Glide.with(context)
+                .load(getImageBasedOnColour(routeBoulder.getColour()))
+                .into(holder.ivRouteBoulderHold);
 
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
@@ -88,14 +92,33 @@ public class RoutesBouldersTrainingAdapter extends RecyclerView.Adapter<RoutesBo
     }
 
     public static class RoutesBouldersTrainingViewHolder extends RecyclerView.ViewHolder {
-        TextView tvTrainingRouteBoulderName, tvTrainingRouteBoulderDifficulty, tvTrainingRouteBoulderID, tvTrainingRouteBoulderTimesClimbed;
-
+        TextView tvTrainingRouteBoulderName, tvTrainingRouteBoulderDifficulty, tvTrainingRouteBoulderTimesClimbed, tvRouteBoulderTrainingHeight;
+        ImageView ivRouteBoulderHold;
         public RoutesBouldersTrainingViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTrainingRouteBoulderName = itemView.findViewById(R.id.tvRouteBoulderTrainingName);
             tvTrainingRouteBoulderDifficulty = itemView.findViewById(R.id.tvRouteBoulderTrainingDifficulty);
-            tvTrainingRouteBoulderID = itemView.findViewById(R.id.TVRouteTrainingBoulderID);
             tvTrainingRouteBoulderTimesClimbed = itemView.findViewById(R.id.tvTrainingTimesClimbed);
+            tvRouteBoulderTrainingHeight = itemView.findViewById(R.id.tvRouteBoulderTrainingHeight);
+            ivRouteBoulderHold = itemView.findViewById(R.id.ivRouteBoulderTrainingHold);
+
+        }
+    }
+
+    private int getImageBasedOnColour(String colorName) {
+        switch (colorName.toLowerCase()) {
+            case "red": return R.drawable.red;
+            case "blue": return R.drawable.blue;
+            case "green": return R.drawable.green;
+            case "black": return R.drawable.black;
+            case "white": return R.drawable.white;
+            case "yellow": return R.drawable.yellow;
+            case "orange": return R.drawable.orange;
+            case "purple": return R.drawable.purple;
+            case "pink": return R.drawable.pink;
+            case "brown": return R.drawable.brown;
+            case "grey": return R.drawable.grey;
+            default: return R.drawable.grey;
         }
     }
 }

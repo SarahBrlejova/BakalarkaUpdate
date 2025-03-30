@@ -5,27 +5,53 @@
     android:layout_height="wrap_content"
     android:padding="8dp">
 
-    <TextView
-        android:id="@+id/tvRouteBoulderTrainingName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Názov cesty/bouldru"
-        android:textSize="18sp"
-        android:textStyle="bold"/>
 
-    <TextView
-        android:id="@+id/tvRouteBoulderTrainingDifficulty"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Obtiažnosť"
-        android:textSize="14sp"/>
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/TVRouteTrainingBoulderID"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="ID"
-        android:textSize="14sp"/>
+        <TextView
+            android:id="@+id/tvRouteBoulderTrainingDifficulty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="7a+"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginEnd="12dp" />
+
+        <TextView
+            android:id="@+id/tvRouteBoulderTrainingName"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Dyno Madness"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:ellipsize="end" />
+
+        <TextView
+            android:id="@+id/tvRouteBoulderTrainingHeight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="16 m"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginEnd="12dp" />
+
+        <ImageView
+            android:id="@+id/ivRouteBoulderTrainingHold"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="8dp"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true" />
+
+</LinearLayout>
+
+
+
 
 
     <TextView
