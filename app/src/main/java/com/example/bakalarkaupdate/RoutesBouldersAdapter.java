@@ -11,13 +11,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-public class RoutesBouldersAdapter extends RecyclerView.Adapter<RoutesBouldersAdapter.RoutesBouldersViewHolder>{
+public class RoutesBouldersAdapter extends RecyclerView.Adapter<RoutesBouldersAdapter.RoutesBouldersViewHolder> {
 
     Context context;
     List<RouteBoulder> routeBoulderList;
@@ -52,7 +53,9 @@ public class RoutesBouldersAdapter extends RecyclerView.Adapter<RoutesBouldersAd
                 .load(getImageBasedOnColour(routeBoulder.getColour()))
                 .into(holder.ivRouteBoulderHold);
 
-
+        if (routeBoulder.isClimbed()) {
+            holder.itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.green));
+        }
 
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
@@ -72,6 +75,50 @@ public class RoutesBouldersAdapter extends RecyclerView.Adapter<RoutesBouldersAd
         return routeBoulderList.size();
     }
 
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
+    public void setOnItemLongClickListener(OnItemLongClickListener listener) {
+        this.longListener = listener;
+    }
+
+    private int getImageBasedOnColour(String colorName) {
+        switch (colorName.toLowerCase()) {
+            case "red":
+                return R.drawable.red;
+            case "blue":
+                return R.drawable.blue;
+            case "green":
+                return R.drawable.green;
+            case "black":
+                return R.drawable.black;
+            case "white":
+                return R.drawable.white;
+            case "yellow":
+                return R.drawable.yellow;
+            case "orange":
+                return R.drawable.orange;
+            case "purple":
+                return R.drawable.purple;
+            case "pink":
+                return R.drawable.pink;
+            case "brown":
+                return R.drawable.brown;
+            case "grey":
+                return R.drawable.grey;
+            default:
+                return R.drawable.grey;
+        }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(RouteBoulder routeBoulder);
+    }
+
+    public interface OnItemLongClickListener {
+        void onItemLongClick(RouteBoulder routeBoulder);
+    }
 
     public static class RoutesBouldersViewHolder extends RecyclerView.ViewHolder {
         TextView tvRouteBoulderName, tvRouteBoulderDifficulty, tvRouteBoulderHeight;
@@ -85,38 +132,6 @@ public class RoutesBouldersAdapter extends RecyclerView.Adapter<RoutesBouldersAd
             ivRouteBoulderHold = itemView.findViewById(R.id.ivRouteBoulderHold);
         }
     }
-
-    public interface OnItemClickListener {
-        void onItemClick(RouteBoulder routeBoulder);
-    }
-    public interface OnItemLongClickListener {
-        void onItemLongClick(RouteBoulder routeBoulder);
-    }
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.listener = listener;
-    }
-
-    public void setOnItemLongClickListener(OnItemLongClickListener listener) {
-        this.longListener = listener;
-    }
-
-    private int getImageBasedOnColour(String colorName) {
-        switch (colorName.toLowerCase()) {
-            case "red": return R.drawable.red;
-            case "blue": return R.drawable.blue;
-            case "green": return R.drawable.green;
-            case "black": return R.drawable.black;
-            case "white": return R.drawable.white;
-            case "yellow": return R.drawable.yellow;
-            case "orange": return R.drawable.orange;
-            case "purple": return R.drawable.purple;
-            case "pink": return R.drawable.pink;
-            case "brown": return R.drawable.brown;
-            case "grey": return R.drawable.grey;
-            default: return R.drawable.grey;
-        }
-    }
-
 
 
 }

@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,6 +103,7 @@ public class TrainingRoutesFragment extends Fragment {
                 .document(centerId)
                 .collection("routes")
                 .whereEqualTo("isActive", true)
+                .orderBy("difficultyValue", Query.Direction.ASCENDING)
                 .addSnapshotListener((querySnapshot, error) -> {
                     if (error != null) {
                         return;

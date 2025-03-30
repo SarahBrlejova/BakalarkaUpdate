@@ -12,9 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,6 +74,32 @@ public class RoutesFragment extends Fragment {
         return view;
     }
 
+    private void checkUserClimbedRoutes() {
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        db.collection("climbedRoutes")
+                .whereEqualTo("userId", userId)
+                .addSnapshotListener((userRoutesSnapshot, error) -> {
+                    if (error != null) {
+                        return;
+                    }
+                    if (userRoutesSnapshot != null) {
+                        for (QueryDocumentSnapshot routeDoc : userRoutesSnapshot) {
+                            String[] separe = routeDoc.getId().split("_");
+                            if (separe.length == 2) {
+                                String routeId = separe[1];
+                                for (RouteBoulder route : routesList) {
+                                    if (route.getId().equals(routeId)) {
+                                        route.setClimbed(true);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    adapter.notifyDataSetChanged();
+                });
+    }
+
+
     private void loadData() {
         if (centerId == null || centerId.isEmpty()) {
             return;
@@ -80,6 +109,7 @@ public class RoutesFragment extends Fragment {
                 .document(centerId)
                 .collection("routes")
                 .whereEqualTo("isActive", true)
+                .orderBy("difficultyValue", Query.Direction.ASCENDING)
                 .addSnapshotListener((querySnapshot, error) -> {
                     if (error != null) {
                         return;
@@ -91,6 +121,7 @@ public class RoutesFragment extends Fragment {
                             route.setId(doc.getId());
                             routesList.add(route);
                         }
+                        checkUserClimbedRoutes();
                         adapter.notifyDataSetChanged();
                     }
                 });

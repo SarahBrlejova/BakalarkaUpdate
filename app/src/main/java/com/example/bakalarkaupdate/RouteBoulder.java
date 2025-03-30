@@ -17,6 +17,8 @@ public class RouteBoulder {
     private int timesClimbed = 0;
     private long totalDifficultyPoints = 0;
 
+    private boolean climbed = false;
+
     public RouteBoulder() {
     }
 
@@ -145,4 +147,13 @@ public class RouteBoulder {
             timesClimbed--;
         }
     }
+
+    public boolean isClimbed() {
+        return climbed;
+    }
+
+    public void setClimbed(boolean climbed) {
+        this.climbed = climbed;
+    }
+
 }
