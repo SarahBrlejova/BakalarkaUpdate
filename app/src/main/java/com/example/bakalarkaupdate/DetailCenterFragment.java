@@ -10,8 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 
@@ -20,7 +23,9 @@ public class DetailCenterFragment extends Fragment {
     String centerId, centerNameString;
     private FirebaseFirestore db;
     private TextView tvDetailCenterName;
-    private Button btnBoulders, btnRoutes, btnBack;
+    private MaterialButton btnBoulders, btnRoutes;
+
+    ImageView btnBack;
 
     public DetailCenterFragment() {
         // Required empty public constructor
