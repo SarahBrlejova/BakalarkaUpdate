@@ -2,22 +2,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/nav_centers"
-        android:title="Centrá"
-        android:icon="@android:drawable/ic_menu_mapmode" />
+        android:title=""
+        android:icon="@drawable/houses" />
 
     <item
         android:id="@+id/nav_training"
-        android:title="Tréning"
-        android:icon="@android:drawable/ic_menu_compass" />
+        android:title=""
+        android:icon="@drawable/climbing" />
 
     <item
         android:id="@+id/nav_collections"
-        android:title="Kolekcie"
-        android:icon="@android:drawable/ic_menu_gallery" />
+        android:title=""
+        android:icon="@drawable/badge1" />
 
     <item
         android:id="@+id/nav_profil"
-        android:title="Profil"
-        android:icon="@android:drawable/ic_menu_myplaces" />
+        android:title=""
+        android:icon="@drawable/user" />
 
 </menu>
