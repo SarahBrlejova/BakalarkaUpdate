@@ -128,11 +128,17 @@ public class DetailCenterFragment extends Fragment {
 
     private void buttonColour(String fragmentType) {
         if (fragmentType.equals("BOULDERS")) {
-            btnBoulders.setBackgroundColor(getResources().getColor(android.R.color.holo_green_light));
-            btnRoutes.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
+            btnBoulders.setBackgroundColor(getResources().getColor(R.color.darkerPurple));
+            btnBoulders.setTextColor(getResources().getColor(R.color.white));
+
+            btnRoutes.setBackgroundColor(getResources().getColor(R.color.white));
+            btnRoutes.setTextColor(getResources().getColor(R.color.darkerPurple));
         } else if (fragmentType.equals("ROUTES")) {
-            btnRoutes.setBackgroundColor(getResources().getColor(android.R.color.holo_green_light));
-            btnBoulders.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
+            btnRoutes.setBackgroundColor(getResources().getColor(R.color.darkerPurple));
+            btnRoutes.setTextColor(getResources().getColor(R.color.white));
+
+            btnBoulders.setBackgroundColor(getResources().getColor(R.color.white));
+            btnBoulders.setTextColor(getResources().getColor(R.color.darkerPurple));
         }
     }
 

@@ -54,7 +54,7 @@ public class RoutesBouldersAdapter extends RecyclerView.Adapter<RoutesBouldersAd
                 .into(holder.ivRouteBoulderHold);
 
         if (routeBoulder.isClimbed()) {
-            holder.itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.green));
+            holder.itemView.setBackgroundResource(R.drawable.route_boulder_border);
         }
 
         holder.itemView.setOnClickListener(v -> {

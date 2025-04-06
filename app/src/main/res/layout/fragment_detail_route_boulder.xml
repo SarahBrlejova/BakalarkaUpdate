@@ -5,20 +5,140 @@
     android:orientation="vertical"
     android:id="@+id/fragmentDetailRouteBoulderLayout"
     android:layout_height="match_parent"
+    android:padding="16px"
     tools:context=".DetailRouteBoulderFragment">
 
-    <Button
-        android:id="@+id/btnDetailRouteBoulderFragmentBack"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Back" />
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="8dp">
+
+    <ImageView
+        android:id="@+id/btnDetailRouteBoulderFragmentBack"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginRight="15dp"
+        android:src="@drawable/backbuttonpurple"
+        android:contentDescription="Späť"
+        android:clickable="true"
+        android:focusable="true" />
+
+        <TextView
+            android:id="@+id/tvDetailRouteBoulderName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Lezecká cesta"
+            android:textColor="#3D2060"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-medium"
+            android:letterSpacing="0.05"
+            android:gravity="center"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:textAlignment="center" />
+    </LinearLayout>
+
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:padding="8dp"
+        android:background="@drawable/round_corner"
+        android:showDividers="middle"
+        android:dividerPadding="8dp">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Farba:"
+                android:textColor="#3D2060"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvDetailRouteBoulderColour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textColor="#3D2060"
+                android:text="--" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Difficulty:"
+                android:textStyle="bold"
+                android:textColor="#3D2060" />
+
+            <TextView
+                android:id="@+id/tvDetailRouteBoulderDifficulty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="--"
+                android:textColor="#3D2060"  />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Height:"
+                android:textStyle="bold"
+                android:textColor="#3D2060" />
+
+            <TextView
+                android:id="@+id/tvDetailRouteBoulderHeight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textColor="#3D2060"
+                android:text="--" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sektor:"
+                android:textColor="#3D2060"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvDetailRouteBoulderSektor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textColor="#3D2060"
+                android:text="--" />
+        </LinearLayout>
 
         <LinearLayout
             android:orientation="horizontal"
@@ -28,107 +148,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Name:"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvDetailRouteBoulderName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Colour:"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvDetailRouteBoulderColour"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="--" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Difficulty:"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvDetailRouteBoulderDifficulty"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="--" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Height:"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvDetailRouteBoulderHeight"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="--" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sektor:"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvDetailRouteBoulderSektor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="--" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="Setter:"
+                android:textColor="#3D2060"
                 android:textStyle="bold" />
 
             <TextView
@@ -136,19 +157,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:textColor="#3D2060"
                 android:text="--" />
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Notes:"
+                android:textColor="#3D2060"
                 android:textStyle="bold" />
 
             <TextView
@@ -156,19 +178,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:textColor="#3D2060"
                 android:text="--" />
+
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Created at:"
+                android:textColor="#3D2060"
                 android:textStyle="bold" />
 
             <TextView
@@ -176,48 +200,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:textColor="#3D2060"
                 android:text="--" />
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Is Active:"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvDetailRouteBoulderIsActive"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="--" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="ID:"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvDetailRouteBoulderId"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="--" />
-        </LinearLayout>
 
     </LinearLayout>
 

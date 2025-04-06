@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,7 +20,7 @@ public class DetailRouteBoulderFragment extends Fragment {
     private String centerId;
     private String type;
     private String routeId, boulderId;
-    private TextView tvName, tvColour, tvDifficulty, tvHeight, tvSektor, tvSetter, tvNotes, tvCreatedAt, tvId, tvIsActive;
+    private TextView tvName, tvColour, tvDifficulty, tvHeight, tvSektor, tvSetter, tvNotes, tvCreatedAt;
 
     public DetailRouteBoulderFragment() {
         // Required empty public constructor
@@ -67,10 +68,9 @@ public class DetailRouteBoulderFragment extends Fragment {
         tvSetter = view.findViewById(R.id.tvDetailRouteBoulderSetter);
         tvNotes = view.findViewById(R.id.tvDetailRouteBoulderNotes);
         tvCreatedAt = view.findViewById(R.id.tvDetailRouteBoulderCreatedAt);
-        tvId = view.findViewById(R.id.tvDetailRouteBoulderId);
-        tvIsActive = view.findViewById(R.id.tvDetailRouteBoulderIsActive);
 
-        Button btnBack = view.findViewById(R.id.btnDetailRouteBoulderFragmentBack);
+
+        ImageView btnBack = view.findViewById(R.id.btnDetailRouteBoulderFragmentBack);
         btnBack.setOnClickListener(v -> {
             requireActivity().getSupportFragmentManager().popBackStack();
         });
@@ -99,10 +99,6 @@ public class DetailRouteBoulderFragment extends Fragment {
                                 tvSetter.setText(boulder.getSetter());
                                 tvNotes.setText(boulder.getNotes());
                                 tvCreatedAt.setText(boulder.getCreatedAt().toDate().toString());
-                                tvId.setText(boulder.getId());
-                                if (tvIsActive != null) {
-                                    tvIsActive.setText(String.valueOf(boulder.isActive()));
-                                }
                             }
                         } else {
                             Toast.makeText(requireContext(), "Nenašli sa údaje o bouldri", Toast.LENGTH_LONG).show();
@@ -130,10 +126,6 @@ public class DetailRouteBoulderFragment extends Fragment {
                                 tvSetter.setText(route.getSetter());
                                 tvNotes.setText(route.getNotes());
                                 tvCreatedAt.setText(route.getCreatedAt().toDate().toString());
-                                tvId.setText(route.getId());
-                                if (tvIsActive != null) {
-                                    tvIsActive.setText(String.valueOf(route.isActive()));
-                                }
                             }
                         } else {
                             Toast.makeText(requireContext(), "Nenašli sa údaje o ceste", Toast.LENGTH_LONG).show();
