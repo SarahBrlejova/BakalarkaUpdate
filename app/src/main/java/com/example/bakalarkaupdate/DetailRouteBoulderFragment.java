@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class DetailRouteBoulderFragment extends Fragment {
@@ -19,8 +21,9 @@ public class DetailRouteBoulderFragment extends Fragment {
     private FirebaseFirestore db;
     private String centerId;
     private String type;
+    String userId;
     private String routeId, boulderId;
-    private TextView tvName, tvColour, tvDifficulty, tvHeight, tvSektor, tvSetter, tvNotes, tvCreatedAt;
+    private TextView tvName, tvColour, tvDifficulty, tvHeight, tvSektor, tvSetter, tvNotes, tvCreatedAt, tvTimesClimbed;
 
     public DetailRouteBoulderFragment() {
         // Required empty public constructor
@@ -60,6 +63,7 @@ public class DetailRouteBoulderFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_detail_route_boulder, container, false);
 
+        userId= FirebaseAuth.getInstance().getCurrentUser().getUid();
         tvName = view.findViewById(R.id.tvDetailRouteBoulderName);
         tvColour = view.findViewById(R.id.tvDetailRouteBoulderColour);
         tvDifficulty = view.findViewById(R.id.tvDetailRouteBoulderDifficulty);
@@ -68,6 +72,8 @@ public class DetailRouteBoulderFragment extends Fragment {
         tvSetter = view.findViewById(R.id.tvDetailRouteBoulderSetter);
         tvNotes = view.findViewById(R.id.tvDetailRouteBoulderNotes);
         tvCreatedAt = view.findViewById(R.id.tvDetailRouteBoulderCreatedAt);
+        tvTimesClimbed = view.findViewById(R.id.tvDetailRouteBoulderTimesClimbed);
+
 
 
         ImageView btnBack = view.findViewById(R.id.btnDetailRouteBoulderFragmentBack);
@@ -99,6 +105,21 @@ public class DetailRouteBoulderFragment extends Fragment {
                                 tvSetter.setText(boulder.getSetter());
                                 tvNotes.setText(boulder.getNotes());
                                 tvCreatedAt.setText(boulder.getCreatedAt().toDate().toString());
+                                db.collection("climbedBoulders")
+                                        .whereEqualTo("boulderId", boulderId)
+                                        .whereEqualTo("userId", userId)
+                                        .addSnapshotListener((value, error) -> {
+                                            if (error != null) {
+                                                return;
+                                            }
+                                            if  (value != null && !value.isEmpty()) {
+                                                DocumentSnapshot doc = value.getDocuments().get(0);
+                                                Long climbs = doc.getLong("climbs");
+                                                tvTimesClimbed.setText(String.valueOf(climbs));
+                                            } else {
+                                                tvTimesClimbed.setText("0");
+                                            }
+                                        });
                             }
                         } else {
                             Toast.makeText(requireContext(), "Nenašli sa údaje o bouldri", Toast.LENGTH_LONG).show();
@@ -126,6 +147,23 @@ public class DetailRouteBoulderFragment extends Fragment {
                                 tvSetter.setText(route.getSetter());
                                 tvNotes.setText(route.getNotes());
                                 tvCreatedAt.setText(route.getCreatedAt().toDate().toString());
+
+                                db.collection("climbedRoutes")
+                                        .whereEqualTo("routeId", routeId)
+                                        .whereEqualTo("userId", userId)
+                                        .addSnapshotListener((value, error) -> {
+                                            if (error != null) {
+                                                return;
+                                            }
+                                            if  (value != null && !value.isEmpty()) {
+                                                DocumentSnapshot doc = value.getDocuments().get(0);
+                                                Long climbs = doc.getLong("climbs");
+                                                tvTimesClimbed.setText(String.valueOf(climbs));
+                                            } else {
+                                                tvTimesClimbed.setText("0");
+                                            }
+                                        });
+
                             }
                         } else {
                             Toast.makeText(requireContext(), "Nenašli sa údaje o ceste", Toast.LENGTH_LONG).show();
