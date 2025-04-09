@@ -1,133 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16px"
     tools:context=".TrainingFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:orientation="vertical">
+
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/toggleGroupTraining"
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginTop="16dp"
+            app:selectionRequired="false"
+            app:singleSelection="true">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnStart"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Spustiť tréning"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                app:backgroundTint="@color/darkerPurple"
+                app:cornerRadius="20dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnStop"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Ukončiť tréning"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:visibility="gone"
+                app:backgroundTint="@color/darkerPurple"
+                app:cornerRadius="20dp" />
+        </com.google.android.material.button.MaterialButtonToggleGroup>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
-
-            <Button
-                android:id="@+id/btnStart"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:text="Start Training"
-                android:layout_marginEnd="16dp" />
-
-            <Button
-                android:id="@+id/btnStop"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:text="Stop Training"
-                android:visibility="gone" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:layout_marginTop="16dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:text="Time:"
-                android:textSize="18sp"
-                android:gravity="center_vertical" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Čas"
+                android:textColor="#3D2060"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvTime"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
                 android:text="00:00"
-                android:textSize="18sp"
-                android:gravity="center" />
+                android:textColor="#3D2060"
+                android:textSize="28sp"
+                android:textStyle="bold" />
         </LinearLayout>
-
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="50dp"-->
-<!--            android:orientation="horizontal"-->
-<!--            android:gravity="center_vertical">-->
-
-<!--            <TextView-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_weight="1"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:text="Meters Climbed:"-->
-<!--                android:textSize="18sp"-->
-<!--                android:gravity="center_vertical" />-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/tvMeters"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_weight="1"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:text="0"-->
-<!--                android:textSize="18sp"-->
-<!--                android:gravity="center" />-->
-<!--        </LinearLayout>-->
-
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="50dp"-->
-<!--            android:orientation="horizontal"-->
-<!--            android:gravity="center_vertical">-->
-
-<!--            <TextView-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_weight="1"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:text="Boulders Climbed:"-->
-<!--                android:textSize="18sp"-->
-<!--                android:gravity="center_vertical" />-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/tvBoulders"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_weight="1"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:text="0"-->
-<!--                android:textSize="18sp"-->
-<!--                android:gravity="center" />-->
-<!--        </LinearLayout>-->
-
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="50dp"-->
-<!--            android:orientation="horizontal"-->
-<!--            android:gravity="center_vertical">-->
-
-<!--            <TextView-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_weight="1"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:text="Routes Climbed:"-->
-<!--                android:textSize="18sp"-->
-<!--                android:gravity="center_vertical" />-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/tvRoutes"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_weight="1"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:text="0"-->
-<!--                android:textSize="18sp"-->
-<!--                android:gravity="center" />-->
-<!--        </LinearLayout>-->
 
     </LinearLayout>
 
@@ -135,5 +81,6 @@
         android:id="@+id/fragment_containerTraining"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="8dp"
         android:layout_weight="1" />
 </LinearLayout>

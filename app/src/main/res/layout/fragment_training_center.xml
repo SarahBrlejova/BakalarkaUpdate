@@ -6,11 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".TrainingCenterFragment">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="Vyber si lezecké centrum, v ktorom máš dnešný tréning." />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewTrainingCenter"
         android:layout_width="match_parent"

@@ -51,6 +51,12 @@ public class TrainingsAdapter extends RecyclerView.Adapter<TrainingsAdapter.Trai
         holder.tvTrainingItemRoutes.setText(String.valueOf(training.getTotalRoutes()));
         holder.tvTrainingItemMeters.setText(training.getTotalMeters() + "m");;
         holder.tvTrainingItemTime.setText(trainingTimeRecalculation(startTraining,endTraining));
+
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onItemClick(training);
+            }
+        });
     }
 
     @Override

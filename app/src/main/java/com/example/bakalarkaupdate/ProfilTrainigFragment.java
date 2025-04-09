@@ -3,6 +3,7 @@ package com.example.bakalarkaupdate;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -59,6 +60,18 @@ public class ProfilTrainigFragment extends Fragment {
         adapter = new TrainingsAdapter(getContext(), trainingList);
         recyclerView.setAdapter(adapter);
 
+        adapter.setOnItemClickListener(training -> {
+
+            ProfilTrainingDetailFragment fragment = ProfilTrainingDetailFragment.newInstance(training.getId());
+            recyclerView.setVisibility(View.GONE);
+            getView().findViewById(R.id.fragment_containerTrainingDetailCenterData).setVisibility(View.VISIBLE);
+
+            FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        });
+
 
         loadData();
         return view;
@@ -69,6 +82,7 @@ public class ProfilTrainigFragment extends Fragment {
 
         firestoreListener = db.collection("trainings")
                 .whereEqualTo("userId", userId)
+                .orderBy("startTraining", com.google.firebase.firestore.Query.Direction.DESCENDING)
                 .addSnapshotListener((querySnapshot, error) -> {
                     if (error != null) {
                         return;
@@ -77,15 +91,15 @@ public class ProfilTrainigFragment extends Fragment {
                     if (querySnapshot != null) {
                         trainingList.clear();
                         for (var doc : querySnapshot.getDocuments()) {
-                            Log.d("Firestore Data", "Document: " + doc.getData());
-
                             Training training = doc.toObject(Training.class);
+                            training.setId(doc.getId());
                             trainingList.add(training);
                         }
                         adapter.notifyDataSetChanged();
                     }
                 });
     }
+
 
 
 
